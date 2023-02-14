@@ -8,6 +8,7 @@ public class TargetController : MonoBehaviour
     private void Update()
     {
         OnMouseOver();
+        
     }
 
     private void OnMouseOver()
