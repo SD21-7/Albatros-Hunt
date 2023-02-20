@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class TargetController : MonoBehaviour
@@ -8,6 +9,7 @@ public class TargetController : MonoBehaviour
     private Rigidbody2D _rigidbody2D;
     public bool MovingRight = true;
     private float _verticalmovement;
+    private bool _isdead = false;
 
     [Range(0, 10)] public float _jumpforce;
     [Range(-10, 10)] public float speed;
@@ -21,30 +23,56 @@ public class TargetController : MonoBehaviour
 
     private void Update()
     {
-        _verticalmovement = _rigidbody2D.velocity.y;
-        OnMouseOver();
-        _rigidbody2D.velocity = new Vector2(speed, _verticalmovement);
+        if (!_isdead)
+        {
+            _verticalmovement = _rigidbody2D.velocity.y;
+            _rigidbody2D.velocity = new Vector2(speed, _verticalmovement);
+        }
     }
 
-    private void OnMouseOver()
+    private void OnMouseDown()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (!_isdead)
         {
-            Destroy(gameObject);
+            StartCoroutine("Death");
         }
     }
 
     private void Fly()
     {
-        _rigidbody2D.velocity = new Vector2(0, _jumpforce);
+        if (!_isdead)
+        {
+            _rigidbody2D.velocity = new Vector2(0, _jumpforce);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        speed = -speed;
+       
+        if (col.gameObject.CompareTag("Target"))
+        {
+            Physics2D.IgnoreCollision(col.collider, GetComponent<Collider2D>());
+        }
+
+        if (col.gameObject.CompareTag("LeftCol") || col.gameObject.CompareTag("RightCol"))
+        {
+            speed = -speed;
+        }
+
         if (col.gameObject.CompareTag("TopCol"))
         {
             Destroy(gameObject);
         }
+    }
+
+    private IEnumerator Death()
+    {
+        _isdead = true;
+        _rigidbody2D.velocity = new Vector2(0, 0);
+        _rigidbody2D.velocity = new Vector2(0, _jumpforce);
+        // yield return new WaitForSeconds(1f);
+        // _rigidbody2D.velocity = new Vector2(0, -_jumpforce);
+        yield return new WaitForSeconds(2f);
+        Destroy(gameObject);
     }
 }
