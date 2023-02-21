@@ -19,12 +19,6 @@ public class TargetSpawn : MonoBehaviour
     
     void SpawnTarget()
     {
-        CurrentSpawnCount++;
-        if (CurrentSpawnCount >= MaxSpawnCount)
-        {
-            CancelInvoke("SpawnTarget");
-            return;
-        }
         int randomTarget = Random.Range(1, 4);
         Vector3 spawnPosition = new Vector3(Random.Range(-8f, 2.5f), -5.5f, 0);
         switch (randomTarget)
@@ -38,6 +32,12 @@ public class TargetSpawn : MonoBehaviour
             case 3:
                 Instantiate(target3Prefab, spawnPosition, Quaternion.identity);
                 break;
+        }
+        CurrentSpawnCount++;
+        if (CurrentSpawnCount >= MaxSpawnCount)
+        {
+            CancelInvoke("SpawnTarget");
+            return;
         }
     }
 }

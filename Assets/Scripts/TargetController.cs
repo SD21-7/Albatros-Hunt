@@ -6,7 +6,9 @@ using UnityEngine;
 
 public class TargetController : MonoBehaviour
 {
+    public GunController _gunController;
     private Rigidbody2D _rigidbody2D;
+    
     public bool MovingRight = true;
     private float _verticalmovement;
     private bool _isdead = false;
@@ -17,6 +19,7 @@ public class TargetController : MonoBehaviour
 
     private void Start()
     {
+        _gunController = GameObject.Find("Crosshair").GetComponent<GunController>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
         InvokeRepeating("Fly", 0, _jumprate);
     }
@@ -35,6 +38,18 @@ public class TargetController : MonoBehaviour
         if (!_isdead)
         {
             StartCoroutine("Death");
+            if (gameObject.name == "Target 1(Clone)")
+            {
+                _gunController._score += _gunController.Target1Value;
+            }
+            else if (gameObject.name == "Target 2(Clone)")
+            {
+                _gunController._score += _gunController.Target2Value;
+            }
+            else if (gameObject.name == "Target 3(Clone)")
+            {
+                _gunController._score += _gunController.Target3Value;
+            }
         }
     }
 
@@ -48,7 +63,6 @@ public class TargetController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-       
         if (col.gameObject.CompareTag("Target"))
         {
             Physics2D.IgnoreCollision(col.collider, GetComponent<Collider2D>());
@@ -70,8 +84,6 @@ public class TargetController : MonoBehaviour
         _isdead = true;
         _rigidbody2D.velocity = new Vector2(0, 0);
         _rigidbody2D.velocity = new Vector2(0, _jumpforce);
-        // yield return new WaitForSeconds(1f);
-        // _rigidbody2D.velocity = new Vector2(0, -_jumpforce);
         yield return new WaitForSeconds(2f);
         Destroy(gameObject);
     }
