@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - TopCol
+  - LeftCol
+  - RightCol
+  - Target
   layers:
   - Default
   - TransparentFX
@@ -11,9 +15,9 @@ TagManager:
   - Background
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Colliders
+  - Player
+  - Target
   - 
   - 
   - 
