@@ -8,6 +8,7 @@ TagManager:
   - LeftCol
   - RightCol
   - Target
+  - Ammo
   layers:
   - Default
   - TransparentFX
