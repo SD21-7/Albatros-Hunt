@@ -9,7 +9,7 @@ public class TargetController : MonoBehaviour
     public GunController _gunController;
     private Rigidbody2D _rigidbody2D;
     private Animator _animator;
-    
+
     public bool MovingRight = true;
     private float _verticalmovement;
     private bool _isdead = false;

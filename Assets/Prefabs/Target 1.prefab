@@ -149,7 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gunController: {fileID: 0}
   MovingRight: 1
-  _jumpforce: 1.23
+  _jumpforce: 1.76
   _speed: 4
   _jumprate: 0.02
 --- !u!95 &2750596914579609185
