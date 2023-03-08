@@ -147,10 +147,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d735ca8fdd8b4ecb9f164f0871b9808, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gunController: {fileID: 0}
-  MovingRight: 1
+  Crosshair: {fileID: 0}
   _jumpforce: 1.23
-  _speed: 4
+  _speed: 5
   _jumprate: 0.02
 --- !u!95 &2750596914579609185
 Animator:
