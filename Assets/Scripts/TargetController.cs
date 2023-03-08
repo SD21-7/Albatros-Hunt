@@ -87,7 +87,7 @@ public class TargetController : MonoBehaviour
     {
         _isdead = true;
         _rigidbody2D.velocity = new Vector2(0, 0);
-        _rigidbody2D.velocity = new Vector2(0, _jumpforce);
+        _rigidbody2D.velocity = new Vector2(0, 6);
         yield return new WaitForSeconds(2f);
         Destroy(gameObject);
     }
