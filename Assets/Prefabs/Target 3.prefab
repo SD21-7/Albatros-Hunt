@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1161969327312507762}
   - component: {fileID: 5110189318287198353}
   - component: {fileID: 8969427525090382929}
+  - component: {fileID: 7152918109893012646}
   m_Layer: 0
   m_Name: Target 3
   m_TagString: Target
@@ -76,12 +77,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 1658346144, guid: 50e7317e273474768a70df38ae3d6417, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.47, y: 0.38}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -139,5 +140,25 @@ MonoBehaviour:
   _gunController: {fileID: 0}
   MovingRight: 1
   _jumpforce: 7
-  speed: 4
-  _jumprate: 1
+  _speed: 0
+  _jumprate: 0.1
+--- !u!95 &7152918109893012646
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7452605058437195505}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: da2ea65dcb6f541649c64b3d46b5764d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0

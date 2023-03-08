@@ -28,7 +28,7 @@ public class TargetSpawn : MonoBehaviour
                 Instantiate(target1Prefab, spawnPosition, Quaternion.identity).transform.parent = parent.transform;
                 break;
             case 2:
-                Instantiate(target2Prefab, spawnPosition, Quaternion.identity).transform.parent = parent.transform;
+                Instantiate(target3Prefab, spawnPosition, Quaternion.identity).transform.parent = parent.transform;
                 break;
             case 3:
                 Instantiate(target3Prefab, spawnPosition, Quaternion.identity).transform.parent = parent.transform;
