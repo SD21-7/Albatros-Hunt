@@ -10,21 +10,24 @@ public class PlayerGun : MonoBehaviour
     private Gun gun;
     private float fireDown;
     private float reloadDown;
-
+    [SerializeField] private AudioSource cameraAudioObject;
+    [SerializeField] private Sounds sounds;
+    
     public Gun GetGun() { return gun; }
 
     public void SetGun(Gun gun)
     {
         if(gun != null) this.gun = gun;
+        this.gun.SetGunAudio(cameraAudioObject);
         BroadcastMessage("UpdateGun");
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        //SetGun(new Gun("M4", 30, 30, 0.1f, 0.1f, 25, true));
-        //SetGun(new Gun("Revolver", 6, 6, 1, 0.1f, 100, false));
-        SetGun(new Gun("Hunting Rifle", 4, 4, 1.2f, 0.1f, 175, false, null, null));
+        //SetGun(new Gun("M4", 30, 30, 0.15f, 0.1f, 75, true, sounds.shot, null));
+        SetGun(new Gun("Revolver", 6, 6, 1, 0.1f, 100, false, sounds.shot, null));
+        //SetGun(new Gun("Hunting Rifle", 9999, 9999, 0.05f, 0.1f, 175, true, sounds.shot, null));
 
     }
 
@@ -57,7 +60,7 @@ public class PlayerGun : MonoBehaviour
 
         if (hit)
         {
-            hit.collider.gameObject.SendMessage("Hit", gun.Damage);
+            hit.collider.gameObject.SendMessage("Hit", gun.Damage, SendMessageOptions.DontRequireReceiver);
         }
     }
 }
@@ -71,9 +74,10 @@ public class Gun
     public float ShotWidth { get;}
     public int Damage { get;}
     public bool Auto { get; }
-    public AudioSource FireSound { get; }
-    public AudioSource EmptySound { get; }
-    public Gun(string name, int maxAmmo, int loadedAmmo, float fireRate, float shotWidth, int damage, bool auto, [CanBeNull] AudioSource fireSound, [CanBeNull] AudioSource emptySound)
+    private AudioClip FireSound { get; }
+    private AudioClip EmptySound { get; }
+    private AudioSource gunAudio;
+    public Gun(string name, int maxAmmo, int loadedAmmo, float fireRate, float shotWidth, int damage, bool auto, [CanBeNull] AudioClip fireSound, [CanBeNull] AudioClip emptySound)
     {
         Name = name;
         MaxAmmo = maxAmmo;
@@ -86,6 +90,11 @@ public class Gun
         EmptySound = emptySound;
     }
 
+    public void SetGunAudio(AudioSource audio)
+    {
+        gunAudio = audio;
+    }
+
     public void ChangeAmmo(int num)
     {
         LoadedAmmo += num;
@@ -94,14 +103,20 @@ public class Gun
 
     public void playFireSound()
     {
+        Debug.Log(FireSound);
         if (FireSound != null)
         {
-            FireSound.Play();
+            gunAudio.clip = FireSound;
+            gunAudio.Play();
         }
     }
 
     public void playEmptySound()
     {
-        Debug.Log("click");
+        if (EmptySound != null)
+        {
+            gunAudio.clip = EmptySound;
+            gunAudio.Play();
+        }
     }
 }

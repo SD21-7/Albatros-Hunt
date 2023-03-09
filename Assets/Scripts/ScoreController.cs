@@ -6,7 +6,7 @@ using UnityEngine;
 public class ScoreController : MonoBehaviour
 {
     public int Score { private get; set; }
-    [SerializeField] private TextMeshPro text;
+    [SerializeField] private TextMeshProUGUI text;
 
     public void EnemyDied(int modifyBy)
     {
