@@ -126,7 +126,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.2666667, y: 1.2}
+    oldSize: {x: 0.95, y: 0.9}
     newSize: {x: 0.6909091, y: 0.6545454}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -147,10 +147,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d735ca8fdd8b4ecb9f164f0871b9808, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gunController: {fileID: 0}
-  MovingRight: 1
+  Crosshair: {fileID: 0}
   _jumpforce: 1.23
-  _speed: 4
+  _speed: 5
   _jumprate: 0.02
 --- !u!95 &2750596914579609185
 Animator:

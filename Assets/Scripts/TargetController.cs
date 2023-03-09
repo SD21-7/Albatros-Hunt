@@ -6,23 +6,26 @@ using UnityEngine;
 
 public class TargetController : MonoBehaviour
 {
-    public GunController _gunController;
+    private GunController _gunController;
     private Rigidbody2D _rigidbody2D;
+    private Animator _animator;
+    private SpriteRenderer sprite;
+    public GameObject Crosshair;
+
     
-    public bool MovingRight = true;
     private float _verticalmovement;
     private bool _isdead = false;
 
     [Range(0, 10)] public float _jumpforce;
     [Range(-10, 10)] public float _speed;
     [Range(0, 5)] public float _jumprate;
-    
-    private SpriteRenderer sprite;
 
     private void Start()
     {
+        Crosshair = GameObject.Find("Crosshair");
         sprite = GetComponent<SpriteRenderer>();
-        _gunController = GameObject.Find("Crosshair").GetComponent<GunController>();
+        _animator = GetComponent<Animator>();
+        _gunController = Crosshair.GetComponent<GunController>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
         InvokeRepeating("Fly", 0, _jumprate);
     }
@@ -86,6 +89,7 @@ public class TargetController : MonoBehaviour
     private IEnumerator Death()
     {
         _isdead = true;
+        _animator.SetTrigger("Dead");
         _rigidbody2D.velocity = new Vector2(0, 0);
         _rigidbody2D.velocity = new Vector2(0, 6);
         yield return new WaitForSeconds(2f);
