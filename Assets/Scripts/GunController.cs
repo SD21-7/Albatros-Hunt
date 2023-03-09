@@ -10,15 +10,22 @@ public class GunController : MonoBehaviour
     public int Target2Value;
     public int Target3Value;
     public TextMeshProUGUI ScoreText;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+    
+    public AudioSource gunAudio;
+    public AudioClip gun1Sound;
+    
     void Update()
     {
         ScoreText.text = "Score: " + _score;
+        if (Input.GetMouseButtonDown(0))
+        {
+            Gun_1();
+        }
+    }
+    
+    void Gun_1()
+    {
+        gunAudio.clip = gun1Sound;
+        gunAudio.Play();
     }
 }
