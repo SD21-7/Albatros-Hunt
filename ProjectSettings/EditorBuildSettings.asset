@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Main_Menu.unity
     guid: 70c01e6bf270a4d4c82a642f737d3382
   - enabled: 1
-    path: Assets/Scenes/RubenTest.unity
+    path: Assets/Scenes/Master.unity
     guid: df23bee6f50b642329328e9df46f740e
   m_configObjects: {}

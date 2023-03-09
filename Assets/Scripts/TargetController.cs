@@ -8,17 +8,20 @@ public class TargetController : MonoBehaviour
 {
     public GunController _gunController;
     private Rigidbody2D _rigidbody2D;
-    
-    public bool MovingRight = true;
+    private Animator _animator;
     private float _verticalmovement;
     private bool _isdead = false;
 
     [Range(0, 10)] public float _jumpforce;
-    [Range(-10, 10)] public float speed;
+    [Range(-10, 10)] public float _speed;
     [Range(0, 5)] public float _jumprate;
+    
+    private SpriteRenderer sprite;
 
     private void Start()
     {
+        sprite = GetComponent<SpriteRenderer>();
+        _animator = GetComponent<Animator>();
         _gunController = GameObject.Find("Crosshair").GetComponent<GunController>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
         InvokeRepeating("Fly", 0, _jumprate);
@@ -29,7 +32,7 @@ public class TargetController : MonoBehaviour
         if (!_isdead)
         {
             _verticalmovement = _rigidbody2D.velocity.y;
-            _rigidbody2D.velocity = new Vector2(speed, _verticalmovement);
+            _rigidbody2D.velocity = new Vector2(_speed, _verticalmovement);
         }
     }
 
@@ -70,7 +73,8 @@ public class TargetController : MonoBehaviour
 
         if (col.gameObject.CompareTag("LeftCol") || col.gameObject.CompareTag("RightCol"))
         {
-            speed = -speed;
+            _speed = -_speed;
+            sprite.flipX = !sprite.flipX;
         }
 
         if (col.gameObject.CompareTag("TopCol"))
@@ -82,8 +86,9 @@ public class TargetController : MonoBehaviour
     private IEnumerator Death()
     {
         _isdead = true;
+        _animator.SetTrigger("Dead");
         _rigidbody2D.velocity = new Vector2(0, 0);
-        _rigidbody2D.velocity = new Vector2(0, _jumpforce);
+        _rigidbody2D.velocity = new Vector2(0, 6);
         yield return new WaitForSeconds(2f);
         Destroy(gameObject);
     }

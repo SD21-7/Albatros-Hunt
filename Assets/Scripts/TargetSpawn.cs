@@ -7,14 +7,27 @@ public class TargetSpawn : MonoBehaviour
     public GameObject target1Prefab;
     public GameObject target2Prefab;
     public GameObject target3Prefab;
+    public GameObject parent;
     [Range(0,10f)]public float spawnRate;
+    
+    [Header("Spawn Limit")]
     public int MaxSpawnCount;
-    public int CurrentSpawnCount;
+    public int Target1Max;
+    public int Target2Max;
+    public int Target3Max;
+    
+    private int CurrentSpawnCount;
+    private int Target1Count;
+    private int Target2Count;
+    private int Target3Count;
+
+    private bool hasSpawned;
     
     // Start is called before the first frame update
     void Start()
     {
-     InvokeRepeating("SpawnTarget", 0f, spawnRate);   
+        StartCoroutine(spawnTargetTimer());
+        // InvokeRepeating("SpawnTarget", 0f, spawnRate);   
     }
     
     void SpawnTarget()
@@ -24,20 +37,54 @@ public class TargetSpawn : MonoBehaviour
         switch (randomTarget)
         {
             case 1:
-                Instantiate(target1Prefab, spawnPosition, Quaternion.identity);
+                if (Target1Count < Target1Max)
+                {
+                    Instantiate(target1Prefab, spawnPosition, Quaternion.identity).transform.parent = parent.transform;
+                    Target1Count++;
+                    CurrentSpawnCount++;
+                    hasSpawned = true;
+                }
                 break;
             case 2:
-                Instantiate(target2Prefab, spawnPosition, Quaternion.identity);
+                if (Target2Count < Target2Max)
+                {
+                    Instantiate(target2Prefab, spawnPosition, Quaternion.identity).transform.parent = parent.transform;
+                    Target2Count++;
+                    CurrentSpawnCount++;
+                    hasSpawned = true;
+                }
                 break;
             case 3:
-                Instantiate(target3Prefab, spawnPosition, Quaternion.identity);
+                if (Target3Count < Target3Max)
+                {
+                    Instantiate(target3Prefab, spawnPosition, Quaternion.identity).transform.parent = parent.transform;
+                    Target3Count++;
+                    CurrentSpawnCount++;
+                    hasSpawned = true;
+                }
                 break;
         }
-        CurrentSpawnCount++;
         if (CurrentSpawnCount >= MaxSpawnCount)
         {
             CancelInvoke("SpawnTarget");
             return;
         }
+
+        if (hasSpawned)
+        {
+            StartCoroutine(spawnTargetTimer());
+            hasSpawned = false;
+        }
+        else
+        {
+            SpawnTarget();
+        }
+        
+    }
+
+    IEnumerator spawnTargetTimer()
+    {
+        yield return new WaitForSeconds(spawnRate);
+        SpawnTarget();
     }
 }
