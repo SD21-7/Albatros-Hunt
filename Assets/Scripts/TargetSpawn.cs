@@ -20,11 +20,14 @@ public class TargetSpawn : MonoBehaviour
     private int Target1Count;
     private int Target2Count;
     private int Target3Count;
+
+    private bool hasSpawned;
     
     // Start is called before the first frame update
     void Start()
     {
-     InvokeRepeating("SpawnTarget", 0f, spawnRate);   
+        StartCoroutine(spawnTargetTimer());
+        // InvokeRepeating("SpawnTarget", 0f, spawnRate);   
     }
     
     void SpawnTarget()
@@ -39,10 +42,7 @@ public class TargetSpawn : MonoBehaviour
                     Instantiate(target1Prefab, spawnPosition, Quaternion.identity).transform.parent = parent.transform;
                     Target1Count++;
                     CurrentSpawnCount++;
-                }
-                else
-                {
-                    SpawnTarget();
+                    hasSpawned = true;
                 }
                 break;
             case 2:
@@ -51,10 +51,7 @@ public class TargetSpawn : MonoBehaviour
                     Instantiate(target2Prefab, spawnPosition, Quaternion.identity).transform.parent = parent.transform;
                     Target2Count++;
                     CurrentSpawnCount++;
-                }
-                else
-                {
-                    SpawnTarget();
+                    hasSpawned = true;
                 }
                 break;
             case 3:
@@ -63,10 +60,7 @@ public class TargetSpawn : MonoBehaviour
                     Instantiate(target3Prefab, spawnPosition, Quaternion.identity).transform.parent = parent.transform;
                     Target3Count++;
                     CurrentSpawnCount++;
-                }
-                else
-                {
-                    SpawnTarget();
+                    hasSpawned = true;
                 }
                 break;
         }
@@ -75,5 +69,22 @@ public class TargetSpawn : MonoBehaviour
             CancelInvoke("SpawnTarget");
             return;
         }
+
+        if (hasSpawned)
+        {
+            StartCoroutine(spawnTargetTimer());
+            hasSpawned = false;
+        }
+        else
+        {
+            SpawnTarget();
+        }
+        
+    }
+
+    IEnumerator spawnTargetTimer()
+    {
+        yield return new WaitForSeconds(spawnRate);
+        SpawnTarget();
     }
 }
