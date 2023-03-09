@@ -11,8 +11,6 @@ public class PlayerGun : MonoBehaviour
     private float fireDown;
     private float reloadDown;
 
-    [SerializeField] private Sounds sounds;
-
     public Gun GetGun() { return gun; }
 
     public void SetGun(Gun gun)
@@ -26,7 +24,7 @@ public class PlayerGun : MonoBehaviour
     {
         //SetGun(new Gun("M4", 30, 30, 0.1f, 0.1f, 25, true));
         //SetGun(new Gun("Revolver", 6, 6, 1, 0.1f, 100, false));
-        SetGun(new Gun("Hunting Rifle", 4, 4, 1.2f, 0.1f, 175, false, sounds.huntingRifleShot, null));
+        SetGun(new Gun("Hunting Rifle", 4, 4, 1.2f, 0.1f, 175, false, null, null));
 
     }
 
