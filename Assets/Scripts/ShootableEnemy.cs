@@ -11,13 +11,16 @@ public class ShootableEnemy : MonoBehaviour
     public void Hit(int damage)
     {
         health -= damage;
-        sr.color = new Color(1, health / 100f, health / 100f);
+        if (sr != null)
+        {
+            sr.color = new Color(1, health / 100f, health / 100f);
+        }
         if (health <= 0) Death();
     }
 
     private void Death()
     {
-        Destroy(gameObject);
+        gameObject.SendMessage("Died", SendMessageOptions.DontRequireReceiver);
         GameObject.FindGameObjectWithTag("Player").SendMessage("EnemyDied", score);
     }
 }
