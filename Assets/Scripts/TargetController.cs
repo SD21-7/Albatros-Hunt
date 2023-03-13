@@ -60,6 +60,7 @@ public class TargetController : MonoBehaviour
             Destroy(gameObject);
             //TODO: penalty for not hitting target
         }
+
     }
 
     private void OnCollisionEnter2D(Collision2D col)

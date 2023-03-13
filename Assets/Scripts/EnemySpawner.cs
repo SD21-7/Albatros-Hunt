@@ -10,7 +10,6 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] [Range(0,10f)]private float spawnTimer;
     [SerializeField] private int spawnAmount;
     [SerializeField] private int totalEnemies;
-    [SerializeField] private Transform SpawnPosition;
     private float timer;
     private int spawnedEnemies;
 
@@ -27,8 +26,9 @@ public class EnemySpawner : MonoBehaviour
             timer = spawnTimer;
             for (int i = 0; i < spawnAmount; i++)
             {
+                Vector3 SpawnPosition = new Vector3(UnityEngine.Random.Range(-8f, 2.5f), -5.5f, 0);
                 GameObject spawned = Instantiate(prefabs[new Random().Next(prefabs.Count)]);
-                spawned.transform.position = SpawnPosition.position;
+                spawned.transform.position = SpawnPosition;
                 spawnedEnemies++;
             }
         }
