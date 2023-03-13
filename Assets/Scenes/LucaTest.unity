@@ -326,6 +326,7 @@ GameObject:
   - component: {fileID: 544401778}
   - component: {fileID: 544401780}
   - component: {fileID: 544401781}
+  - component: {fileID: 544401782}
   m_Layer: 0
   m_Name: Ammo
   m_TagString: Ammo
@@ -439,6 +440,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Delegates: []
+--- !u!114 &544401782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 544401776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 233762666fd34364abec96d3bcc11606, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &643119161
 GameObject:
   m_ObjectHideFlags: 0
@@ -610,7 +623,9 @@ MonoBehaviour:
   parent: {fileID: 470213949}
   spawnRate: 1
   MaxSpawnCount: 5
-  CurrentSpawnCount: 0
+  Target1Max: 0
+  Target2Max: 0
+  Target3Max: 0
 --- !u!4 &742310941
 Transform:
   m_ObjectHideFlags: 0
@@ -741,6 +756,8 @@ MonoBehaviour:
   Target2Value: 1
   Target3Value: 1
   ScoreText: {fileID: 1100394711}
+  gunAudio: {fileID: 0}
+  gun1Sound: {fileID: 0}
 --- !u!1 &924396266
 GameObject:
   m_ObjectHideFlags: 0
@@ -987,7 +1004,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1280303603}
   - component: {fileID: 1280303602}
-  - component: {fileID: 1280303606}
   - component: {fileID: 1280303605}
   - component: {fileID: 1280303604}
   m_Layer: 0
@@ -1111,18 +1127,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 5.3620315, y: 2.51}
   m_EdgeRadius: 0
---- !u!114 &1280303606
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1280303600}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 233762666fd34364abec96d3bcc11606, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1349348970
 GameObject:
   m_ObjectHideFlags: 0
