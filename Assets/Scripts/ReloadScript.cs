@@ -6,15 +6,24 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 
+
 public class ReloadScript : MonoBehaviour
 {
-    // private void OnTriggerEnter2D(Collider2D col)
-    // {
-    //     if (col.gameObject.tag == "Ammo")
-    //     {
-    //         Debug.Log("hoi");
-    //     }
-    // }
+    Vector3 originalPos;
+
+    private void Start()
+    {
+        originalPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
+     {
+         if (col.gameObject.tag == "Gun")
+         {
+             AmmoUp();
+               gameObject.transform.position = originalPos;
+         }
+     }
     
     Vector3 mousePositionOffset;
     
@@ -34,6 +43,10 @@ public class ReloadScript : MonoBehaviour
     {
         transform.position = GetMousePosition() + mousePositionOffset;
     }
-    
+
+    private void AmmoUp()
+    {
+        
+    }
     
 }
