@@ -452,6 +452,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 233762666fd34364abec96d3bcc11606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Bullet: {fileID: 544401776}
 --- !u!1 &643119161
 GameObject:
   m_ObjectHideFlags: 0
@@ -1008,7 +1009,7 @@ GameObject:
   - component: {fileID: 1280303604}
   m_Layer: 0
   m_Name: Weapon
-  m_TagString: Untagged
+  m_TagString: Gun
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

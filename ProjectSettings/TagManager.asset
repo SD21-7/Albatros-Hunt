@@ -10,6 +10,7 @@ TagManager:
   - Target
   - Ammo
   - Collider
+  - Gun
   layers:
   - Default
   - TransparentFX
