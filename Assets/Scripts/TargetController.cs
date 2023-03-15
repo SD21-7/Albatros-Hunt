@@ -15,6 +15,7 @@ public class TargetController : MonoBehaviour
     [SerializeField] [Range(0, 10)] private float _jumpforce;
     [SerializeField] [Range(-10, 10)] private float _speed;
     [SerializeField] [Range(0, 5)] private float _jumprate;
+    [SerializeField] private bool isFlippable;
 
     private bool goingRight;
     
@@ -27,7 +28,7 @@ public class TargetController : MonoBehaviour
         _rigidbody2D = GetComponent<Rigidbody2D>();
         InvokeRepeating("Fly", 0, _jumprate);
         if (Random.Range(0, 2) == 1) goingRight = true;
-        else sprite.flipX = !sprite.flipX;
+        else if (isFlippable) sprite.flipX = !sprite.flipX;
     }
 
     private void Update()
@@ -52,7 +53,14 @@ public class TargetController : MonoBehaviour
         if (col.CompareTag("Collider"))
         {
             goingRight = !goingRight;
-            sprite.flipX = !sprite.flipX;
+            if (isFlippable)
+            {
+                sprite.flipX = !sprite.flipX;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
         
         if (col.gameObject.CompareTag("TopCol"))
@@ -71,8 +79,9 @@ public class TargetController : MonoBehaviour
         }
     }
 
-    private IEnumerator Died()
+    public IEnumerator Died()
     {
+        Debug.Log("Died");
         _isdead = true;
         if (_animator != null) _animator.SetTrigger("Dead");
         //_rigidbody2D.velocity = new Vector2(0, 0);

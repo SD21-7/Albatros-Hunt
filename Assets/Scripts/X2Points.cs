@@ -1,13 +1,23 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class X2Points : MonoBehaviour
 {
-    private void OnMouseDown()
+    public PlayerGun playerGun;
+
+    private void Update()
     {
-        Debug.Log("X2Points");
+        
+    }
+
+    public void x2Points()
+    {
+        playerGun = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerGun>();
+        playerGun.x2 = true;
         Destroy(gameObject);
     }
 }
