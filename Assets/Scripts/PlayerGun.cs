@@ -13,6 +13,7 @@ public class PlayerGun : MonoBehaviour
     private Camera _camera;
     [SerializeField] private AudioSource cameraAudioObject;
     [SerializeField] private Sounds sounds;
+    public bool canFire = true;
     
     public Gun GetGun() { return gun; }
 
@@ -20,7 +21,7 @@ public class PlayerGun : MonoBehaviour
     {
         if(gun != null) this.gun = gun;
         this.gun.SetGunAudio(cameraAudioObject);
-        BroadcastMessage("UpdateGun");
+        BroadcastMessage("UpdateGun", SendMessageOptions.DontRequireReceiver);
     }
 
     // Start is called before the first frame update
@@ -41,34 +42,34 @@ public class PlayerGun : MonoBehaviour
 
 
         
-        if (Input.GetKeyDown(KeyCode.Mouse0) && !gun.Auto)
-        {
-
-          
-        }
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !gun.Auto) Fire();
         if (Input.GetKey(KeyCode.Mouse0) && gun.Auto) Fire();
     }
     
     private void Fire()
     {
-        if (fireDown > 0) return;
-        if (gun.LoadedAmmo <= 0)
+        if (canFire)
         {
-            gun.playEmptySound();
-            return;
-        }
-        
-        gun.playFireSound();
-        fireDown = gun.FireRate;
-        gun.ChangeAmmo(-1);
-        BroadcastMessage("Fired");
-        
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+            Debug.Log("pew");
+            if (fireDown > 0) return;
+            if (gun.LoadedAmmo <= 0)
+            {
+                gun.playEmptySound();
+                return;
+            }
 
-        if (hit)
-        {
-            hit.collider.gameObject.SendMessage("Hit", gun.Damage, SendMessageOptions.DontRequireReceiver);
+            gun.playFireSound();
+            fireDown = gun.FireRate;
+            gun.ChangeAmmo(-1);
+            BroadcastMessage("Fired", SendMessageOptions.DontRequireReceiver);
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+
+            if (hit)
+            {
+                hit.collider.gameObject.SendMessage("Hit", gun.Damage, SendMessageOptions.DontRequireReceiver);
+            }
         }
     }
 }

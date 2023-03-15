@@ -9,11 +9,13 @@ using UnityEngine.EventSystems;
 
 public class ReloadScript : MonoBehaviour
 {
-   public GameObject Bullet;
+    public PlayerGun playerGun;
+    public GameObject Bullet;
    private Vector3 originalPos;
 
     private void Start()
     {
+        playerGun = GameObject.FindWithTag("Player").GetComponent<PlayerGun>();
          originalPos = transform.position;
     }
 
@@ -47,6 +49,16 @@ public class ReloadScript : MonoBehaviour
     private void OnMouseDrag()
     {
         transform.position = GetMousePosition() + mousePositionOffset;
+    }
+
+    private void OnMouseOver()
+    {
+        playerGun.canFire = false;
+    }
+    
+    private void OnMouseExit()
+    {
+        playerGun.canFire = true;
     }
 
     private void AmmoUp()
