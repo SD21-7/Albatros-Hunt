@@ -10,19 +10,23 @@ using UnityEngine.EventSystems;
 public class ReloadScript : MonoBehaviour
 {
    public GameObject Bullet;
-    Vector3 originalPos;
+   private Vector3 originalPos;
 
     private void Start()
     {
-        // originalPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
+         originalPos = transform.position;
     }
 
-    private void OnTriggerEnter2D(Collider2D col)
+    private void OnTriggerStay2D(Collider2D col)
      {
          if (col.gameObject.tag == "Gun")
          { 
-             AmmoUp();
-               Bullet.transform.position = new Vector3(9.05f, -2.02f, 0f);
+             if (Input.GetMouseButtonUp(0))
+             {
+                 AmmoUp();
+                 transform.position = originalPos;
+             }
+            
          }
      }
     
@@ -47,11 +51,7 @@ public class ReloadScript : MonoBehaviour
 
     private void AmmoUp()
     {
-        // Get a reference to the GameObject's Transform component
-        Transform transform = gameObject.GetComponent<Transform>();
-
-        // Reset the position to (0, 0, 0)
-        transform.position = Vector3.zero; 
+        Debug.Log("hugb");
     }
     
 }
