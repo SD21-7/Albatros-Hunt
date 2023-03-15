@@ -26,8 +26,9 @@ public class PlayerGun : MonoBehaviour
     void Start()
     {
         //SetGun(new Gun("M4", 30, 30, 0.15f, 0.1f, 75, true, sounds.shot, null));
-        SetGun(new Gun("Revolver", 6, 6, 1, 0.1f, 100, false, sounds.shot, null));
+        // SetGun(new Gun("Revolver", 6, 6, 1, 0.1f, 100, false, sounds.shot, null));
         //SetGun(new Gun("Hunting Rifle", 9999, 9999, 0.05f, 0.1f, 175, true, sounds.shot, null));
+        SetGun(new Gun("Admin Gun", 9999, 9999, 0.01f, 0.1f, 100000, true, sounds.shot, null));
 
     }
 
@@ -54,7 +55,7 @@ public class PlayerGun : MonoBehaviour
         fireDown = gun.FireRate;
         gun.ChangeAmmo(-1);
         BroadcastMessage("Fired");
-        
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
 
