@@ -56,13 +56,9 @@ public class TargetController : MonoBehaviour
             {
                 sprite.flipX = !sprite.flipX;
             }
-            else
-            {
-                Destroy(gameObject);
-            }
         }
 
-        if (col.gameObject.CompareTag("TopCol"))
+        if (col.CompareTag("TopCol"))
         {
             Destroy(gameObject);
             //TODO: penalty for not hitting target
