@@ -9,18 +9,17 @@ public class TargetController : MonoBehaviour
 {
     private Rigidbody2D _rigidbody2D;
     private Animator _animator;
+    private SpriteRenderer sprite;
+
     private float _verticalmovement;
     private bool _isdead = false;
+    private bool goingRight;
 
     [SerializeField] [Range(0, 10)] private float _jumpforce;
     [SerializeField] [Range(-10, 10)] private float _speed;
     [SerializeField] [Range(0, 5)] private float _jumprate;
     [SerializeField] private bool isFlippable;
-
-    private bool goingRight;
     
-    private SpriteRenderer sprite;
-
     private void Start()
     {
         sprite = GetComponent<SpriteRenderer>();
@@ -35,7 +34,7 @@ public class TargetController : MonoBehaviour
     {
         if (!_isdead)
         {
-            if(goingRight) _rigidbody2D.velocity = new Vector2(_speed, _rigidbody2D.velocity.y);
+            if (goingRight) _rigidbody2D.velocity = new Vector2(_speed, _rigidbody2D.velocity.y);
             else _rigidbody2D.velocity = new Vector2(-_speed, _rigidbody2D.velocity.y);
         }
     }
@@ -62,13 +61,12 @@ public class TargetController : MonoBehaviour
                 Destroy(gameObject);
             }
         }
-        
+
         if (col.gameObject.CompareTag("TopCol"))
         {
             Destroy(gameObject);
             //TODO: penalty for not hitting target
         }
-
     }
 
     private void OnCollisionEnter2D(Collision2D col)

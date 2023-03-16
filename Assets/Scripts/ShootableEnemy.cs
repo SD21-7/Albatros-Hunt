@@ -7,6 +7,7 @@ public class ShootableEnemy : MonoBehaviour
 {
     public ScoreController scoreController;
     public PlayerGun PlayerGun;
+    
     [SerializeField] private int health = 100;
     [SerializeField] private SpriteRenderer sr;
     [SerializeField] private int score;

@@ -8,10 +8,11 @@ using UnityEngine;
 public class PlayerGun : MonoBehaviour
 {
     private SpriteRenderer sr;
-    
     private Gun gun;
+    
     private float fireDown;
     private float reloadDown;
+    
     [SerializeField] private float x2Timer;
     [SerializeField] private AudioSource cameraAudioObject;
     [SerializeField] private Sounds sounds;
