@@ -12,6 +12,7 @@ public class ReloadScript : MonoBehaviour
     public PlayerGun playerGun;
     public GameObject Bullet;
    private Vector3 originalPos;
+   private bool snapBack = false;
 
     private void Start()
     {
@@ -19,16 +20,24 @@ public class ReloadScript : MonoBehaviour
          originalPos = transform.position;
     }
 
+    private void Update()
+    {
+        if (Input.GetMouseButtonUp(0) && snapBack)
+        {
+            transform.position = originalPos;
+            snapBack = false;
+            Debug.Log("hallo");
+            AmmoUp();
+ 
+        }
+    }
+
     private void OnTriggerStay2D(Collider2D col)
      {
-         if (col.gameObject.tag == "Gun")
-         { 
-             if (Input.GetMouseButtonUp(0))
-             {
-                 AmmoUp();
-                 transform.position = originalPos;
-             }
-            
+
+         if (col.gameObject.CompareTag("Gun"))
+         {
+             snapBack = true;
          }
      }
     
