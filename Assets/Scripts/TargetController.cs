@@ -67,7 +67,7 @@ public class TargetController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.CompareTag("Target"))
+        if (col.gameObject.CompareTag("Target") || col.gameObject.CompareTag("UI"))
         {
             Physics2D.IgnoreCollision(col.collider, GetComponent<Collider2D>());
         }
