@@ -9,10 +9,11 @@ public class PlayerGun : MonoBehaviour
 {
     private SpriteRenderer sr;
     private Gun gun;
-    
+
+
     private float fireDown;
     private float reloadDown;
-    
+
     [SerializeField] private float x2Timer;
     [SerializeField] private AudioSource cameraAudioObject;
     [SerializeField] private Sounds sounds;
@@ -21,6 +22,10 @@ public class PlayerGun : MonoBehaviour
     public bool x2 = false;
     public float x2timer = 5f;
     public GameObject x2Image;
+
+    public bool UnAmmo = false;
+    public float UnAmmoTimer = 5f;
+    public GameObject UnAmmoImage;
 
     public Gun GetGun()
     {
@@ -38,7 +43,7 @@ public class PlayerGun : MonoBehaviour
     void Start()
     {
         //SetGun(new Gun("M4", 30, 30, 0.15f, 0.1f, 75, true, sounds.shot, null));
-        SetGun(new Gun("Revolver", 9999, 9999, 1, 0.1f, 100, false, sounds.shot, null)); //max and loaded ammo 6
+        SetGun(new Gun("Hunting Rifle", 8, 8, 1, 0.1f, 100, false, sounds.shot, null)); //max and loaded ammo 6
         //SetGun(new Gun("Hunting Rifle", 9999, 9999, 0.05f, 0.1f, 175, true, sounds.shot, null));
         // SetGun(new Gun("Admin Gun", 9999, 9999, 0.01f, 0.1f, 100000, true, sounds.shot, null));
     }
@@ -60,6 +65,23 @@ public class PlayerGun : MonoBehaviour
             {
                 x2timer = 5f;
                 x2 = false;
+                sr.enabled = false;
+            }
+        }
+
+        if (UnAmmo)
+        {
+            if (gun.LoadedAmmo < gun.MaxAmmo)
+            {
+                gun.ChangeAmmo(gun.MaxAmmo);
+            }
+            sr = UnAmmoImage.GetComponent<SpriteRenderer>();
+            UnAmmoTimer -= Time.deltaTime;
+            sr.enabled = true;
+            if (UnAmmoTimer <= 0)
+            {
+                UnAmmoTimer = 5f;
+                UnAmmo = false;
                 sr.enabled = false;
             }
         }
@@ -91,6 +113,10 @@ public class PlayerGun : MonoBehaviour
                 // hit.collider.gameObject.SendMessage("Hit", gun.Damage, SendMessageOptions.DontRequireReceiver);
                 hit.collider.gameObject.SendMessage("x2Points", SendMessageOptions.DontRequireReceiver);
             }
+            else if (hit.collider.gameObject.CompareTag("Unlimited"))
+            {
+                hit.collider.gameObject.SendMessage("UnlimitedAmmo", SendMessageOptions.DontRequireReceiver);
+            }
             else
             {
                 hit.collider.gameObject.SendMessage("Hit", gun.Damage, SendMessageOptions.DontRequireReceiver);
@@ -103,7 +129,7 @@ public class Gun
 {
     public string Name { get; }
     public int MaxAmmo { get; }
-    public int LoadedAmmo { get; private set; }
+    public int LoadedAmmo { get; set; }
     public float FireRate { get; }
     public float ShotWidth { get; }
     public int Damage { get; }
