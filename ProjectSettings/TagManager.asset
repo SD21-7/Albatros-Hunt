@@ -12,6 +12,8 @@ TagManager:
   - Collider
   - score_x2
   - Gun
+  - UI
+  - Ground
   layers:
   - Default
   - TransparentFX
