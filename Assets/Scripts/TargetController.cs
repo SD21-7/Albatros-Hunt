@@ -12,7 +12,7 @@ public class TargetController : MonoBehaviour
     private SpriteRenderer sprite;
 
     private float _verticalmovement;
-    private bool _isdead = false;
+    public bool _isdead = false;
     private bool goingRight;
 
     [SerializeField] [Range(0, 10)] private float _jumpforce;
@@ -67,20 +67,23 @@ public class TargetController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.CompareTag("Target") || col.gameObject.CompareTag("UI"))
+        if (col.gameObject.CompareTag("Target"))
         {
             Physics2D.IgnoreCollision(col.collider, GetComponent<Collider2D>());
         }
     }
 
-    public IEnumerator Died()
+    public void Died()
     {
         Debug.Log("Died");
         _isdead = true;
-        if (_animator != null) _animator.SetTrigger("Dead");
+        if (_animator != null) _animator.SetBool("Dead", true);
         //_rigidbody2D.velocity = new Vector2(0, 0);
         _rigidbody2D.velocity = new Vector2(0, 6);
-        yield return new WaitForSeconds(2f);
+    }
+    
+    public void Destroy()
+    {
         Destroy(gameObject);
     }
 }

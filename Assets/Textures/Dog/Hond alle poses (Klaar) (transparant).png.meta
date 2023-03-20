@@ -47,7 +47,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 25
+  spritePixelsToUnits: 8
   spriteBorder: {x: 142, y: 105, z: 121, w: 72}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -367,7 +367,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Hond alle poses (Klaar) (transparant)_6: 83186890
+      Hond alle poses (Klaar) (transparant)_4: -1644938701
       Hond alle poses (Klaar) (transparant)_8: -1982544018
       Hond alle poses (Klaar) (transparant)_1: -1073823738
       Hond alle poses (Klaar) (transparant)_2: -857897635
@@ -378,7 +378,7 @@ TextureImporter:
       Hond alle poses (Klaar) (transparant)_11: 1785688745
       Hond alle poses (Klaar) (transparant)_7: -1639636985
       Hond alle poses (Klaar) (transparant)_10: 77305004
-      Hond alle poses (Klaar) (transparant)_4: -1644938701
+      Hond alle poses (Klaar) (transparant)_6: 83186890
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
