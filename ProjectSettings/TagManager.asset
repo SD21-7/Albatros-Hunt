@@ -15,6 +15,7 @@ TagManager:
   - UI
   - Ground
   - Unlimited
+  - Clear
   layers:
   - Default
   - TransparentFX

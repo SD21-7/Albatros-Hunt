@@ -117,6 +117,10 @@ public class PlayerGun : MonoBehaviour
             {
                 hit.collider.gameObject.SendMessage("UnlimitedAmmo", SendMessageOptions.DontRequireReceiver);
             }
+            else if (hit.collider.gameObject.CompareTag("Clear"))
+            {
+                hit.collider.gameObject.SendMessage("ClearEnemies", SendMessageOptions.DontRequireReceiver);
+            }
             else
             {
                 hit.collider.gameObject.SendMessage("Hit", gun.Damage, SendMessageOptions.DontRequireReceiver);
