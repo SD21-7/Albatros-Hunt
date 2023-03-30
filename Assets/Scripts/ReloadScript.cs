@@ -10,13 +10,16 @@ using UnityEngine.EventSystems;
 public class ReloadScript : MonoBehaviour
 {
     public PlayerGun playerGun;
+    public Gun gun;
     public GameObject Bullet;
    private Vector3 originalPos;
-   private bool snapBack = false;
+   private bool snapBack = true;
+   private bool reloadable = true;
 
     private void Start()
     {
         playerGun = GameObject.FindWithTag("Player").GetComponent<PlayerGun>();
+        // gun = GameObject.FindWithTag("Player").GetComponent<Gun>();
          originalPos = transform.position;
     }
 
@@ -25,19 +28,21 @@ public class ReloadScript : MonoBehaviour
         if (Input.GetMouseButtonUp(0) && snapBack)
         {
             transform.position = originalPos;
-            snapBack = false;
-            Debug.Log("hallo");
-            AmmoUp();
- 
+        }
+        if (transform.position == originalPos)
+        {
+            reloadable = true;
         }
     }
 
     private void OnTriggerStay2D(Collider2D col)
      {
-
-         if (col.gameObject.CompareTag("Gun"))
+         if (col.gameObject.CompareTag("Gun") && reloadable)
          {
-             snapBack = true;
+             reloadable = false;
+             
+             playerGun.GetGun().ChangeAmmo(1);
+             Debug.Log(playerGun.GetGun().LoadedAmmo);
          }
      }
     

@@ -10,7 +10,7 @@ public class PlayerGun : MonoBehaviour
     private SpriteRenderer sr;
     private Gun gun;
 
-
+    public bool canFire = true;
     private float fireDown;
     private float reloadDown;
     [SerializeField] private float x2Timer;
@@ -41,7 +41,7 @@ public class PlayerGun : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _camera = Camera.main;
+        // _camera = Camera.main;
         //SetGun(new Gun("M4", 30, 30, 0.15f, 0.1f, 75, true, sounds.shot, null));
         SetGun(new Gun("Hunting Rifle", 8, 8, 1, 0.1f, 100, false, sounds.shot, null)); //max and loaded ammo 6
         //SetGun(new Gun("Hunting Rifle", 9999, 9999, 0.05f, 0.1f, 175, true, sounds.shot, null));
@@ -75,6 +75,7 @@ public class PlayerGun : MonoBehaviour
             {
                 gun.ChangeAmmo(gun.MaxAmmo);
             }
+
             sr = UnAmmoImage.GetComponent<SpriteRenderer>();
             UnAmmoTimer -= Time.deltaTime;
             sr.enabled = true;
@@ -98,34 +99,35 @@ public class PlayerGun : MonoBehaviour
                 return;
             }
 
-        gun.playFireSound();
-        fireDown = gun.FireRate;
-        gun.ChangeAmmo(-1);
-        BroadcastMessage("Fired", SendMessageOptions.DontRequireReceiver);
+            gun.playFireSound();
+            fireDown = gun.FireRate;
+            gun.ChangeAmmo(-1);
+            BroadcastMessage("Fired", SendMessageOptions.DontRequireReceiver);
 
 
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
 
-        if (hit)
-        {
-            if (hit.collider.gameObject.CompareTag("score_x2"))
+            if (hit)
             {
-                x2Points = hit.collider.gameObject.GetComponent<X2Points>();
-                // hit.collider.gameObject.SendMessage("Hit", gun.Damage, SendMessageOptions.DontRequireReceiver);
-                hit.collider.gameObject.SendMessage("x2Points", SendMessageOptions.DontRequireReceiver);
-            }
-            else if (hit.collider.gameObject.CompareTag("Unlimited"))
-            {
-                hit.collider.gameObject.SendMessage("UnlimitedAmmo", SendMessageOptions.DontRequireReceiver);
-            }
-            else if (hit.collider.gameObject.CompareTag("Clear"))
-            {
-                hit.collider.gameObject.SendMessage("ClearEnemies", SendMessageOptions.DontRequireReceiver);
-            }
-            else
-            {
-                hit.collider.gameObject.SendMessage("Hit", gun.Damage, SendMessageOptions.DontRequireReceiver);
+                if (hit.collider.gameObject.CompareTag("score_x2"))
+                {
+                    x2Points = hit.collider.gameObject.GetComponent<X2Points>();
+                    // hit.collider.gameObject.SendMessage("Hit", gun.Damage, SendMessageOptions.DontRequireReceiver);
+                    hit.collider.gameObject.SendMessage("x2Points", SendMessageOptions.DontRequireReceiver);
+                }
+                else if (hit.collider.gameObject.CompareTag("Unlimited"))
+                {
+                    hit.collider.gameObject.SendMessage("UnlimitedAmmo", SendMessageOptions.DontRequireReceiver);
+                }
+                else if (hit.collider.gameObject.CompareTag("Clear"))
+                {
+                    hit.collider.gameObject.SendMessage("ClearEnemies", SendMessageOptions.DontRequireReceiver);
+                }
+                else
+                {
+                    hit.collider.gameObject.SendMessage("Hit", gun.Damage, SendMessageOptions.DontRequireReceiver);
+                }
             }
         }
     }
@@ -165,6 +167,7 @@ public class Gun
 
     public void ChangeAmmo(int num)
     {
+        Debug.Log("Changing ammo by " + num);
         LoadedAmmo += num;
         if (LoadedAmmo > MaxAmmo) LoadedAmmo = MaxAmmo;
     }
