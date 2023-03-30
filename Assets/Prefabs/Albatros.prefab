@@ -141,6 +141,7 @@ MonoBehaviour:
   _jumpforce: 1.05
   _speed: 3.9
   _jumprate: 0.02
+  isFlippable: 1
 --- !u!114 &-8700495517626816430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,7 +154,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3d177760eeb4964e8866f1da7686ace, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
+  x2Points: {fileID: 0}
+  x2: 0
+  health: 1
   sr: {fileID: 0}
   score: 300
 --- !u!95 &7152918109893012646

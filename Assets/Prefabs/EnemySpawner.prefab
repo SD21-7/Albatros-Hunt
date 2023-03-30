@@ -28,7 +28,8 @@ Transform:
   m_LocalPosition: {x: 1.1415367, y: 0.77698255, z: -0.02998251}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7841735049448087724}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -45,10 +46,46 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabs:
-  - {fileID: 6898986101250193955, guid: ec6dce95a0d51c3469d5c98d6ece9f0b, type: 3}
-  - {fileID: 6603245298730062378, guid: 766bc9537b609e247a2b6516280c993c, type: 3}
-  - {fileID: 7452605058437195505, guid: 8a9c49dfcdef4444289b9402f8f6fcbe, type: 3}
-  - {fileID: 7031531964915239226, guid: bebcc36232d93d148a08bf933cf47a6d, type: 3}
-  spawnTimer: 1.65
-  spawnAmount: 4
-  totalEnemies: 195
+  - {fileID: 7452605058437195505, guid: 0f2f507aa1ae748759fcb8dd28d83bf9, type: 3}
+  - {fileID: 6898986101250193955, guid: a7f8e967e432e4a9da3a2f0fb1586dcb, type: 3}
+  SpawnPosition: {fileID: 7841735049448087724}
+  normalSpawnTimer: 4
+  normalSpawnAmount: 1
+  normalTotalEnemies: 10
+  hardSpawnTimer: 3
+  hardSpawnAmount: 2
+  hardTotalEnemies: 20
+  extremeSpawnTimer: 4
+  extremeSpawnAmount: 3
+  extremeTotalEnemies: 30
+--- !u!1 &7991582924161800846
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7841735049448087724}
+  m_Layer: 0
+  m_Name: position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7841735049448087724
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7991582924161800846}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -5.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6116107897124077741}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

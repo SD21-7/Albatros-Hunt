@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class TextAmmoDisplay : MonoBehaviour
 {
+    private Gun gun;
+    
     [SerializeField] private PlayerGun player;
     [SerializeField] private TextMeshPro text;
-    private Gun gun;
 
     public void UpdateGun()
     {

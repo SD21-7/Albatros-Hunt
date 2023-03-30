@@ -5,17 +5,17 @@ using UnityEngine;
 
 public class ScoreController : MonoBehaviour
 {
-    public int Score { private get; set; }
+    public int Score;
     [SerializeField] private TextMeshProUGUI text;
 
     public void EnemyDied(int modifyBy)
     {
-        Score += modifyBy; UpdateScore();
+        Score += modifyBy;
     }
 
     // Update is called once per frame
-    void UpdateScore()
+    void Update()
     {
-        text.text = Score.ToString();
+        text.text = "Score: " + Score;
     }
 }

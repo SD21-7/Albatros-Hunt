@@ -9,17 +9,17 @@ public class TargetController : MonoBehaviour
 {
     private Rigidbody2D _rigidbody2D;
     private Animator _animator;
+    private SpriteRenderer sprite;
+
     private float _verticalmovement;
-    private bool _isdead = false;
+    public bool _isdead = false;
+    private bool goingRight;
 
     [SerializeField] [Range(0, 10)] private float _jumpforce;
     [SerializeField] [Range(-10, 10)] private float _speed;
     [SerializeField] [Range(0, 5)] private float _jumprate;
-
-    private bool goingRight;
+    [SerializeField] private bool isFlippable;
     
-    private SpriteRenderer sprite;
-
     private void Start()
     {
         sprite = GetComponent<SpriteRenderer>();
@@ -27,14 +27,14 @@ public class TargetController : MonoBehaviour
         _rigidbody2D = GetComponent<Rigidbody2D>();
         InvokeRepeating("Fly", 0, _jumprate);
         if (Random.Range(0, 2) == 1) goingRight = true;
-        else sprite.flipX = !sprite.flipX;
+        else if (isFlippable) sprite.flipX = !sprite.flipX;
     }
 
     private void Update()
     {
         if (!_isdead)
         {
-            if(goingRight) _rigidbody2D.velocity = new Vector2(_speed, _rigidbody2D.velocity.y);
+            if (goingRight) _rigidbody2D.velocity = new Vector2(_speed, _rigidbody2D.velocity.y);
             else _rigidbody2D.velocity = new Vector2(-_speed, _rigidbody2D.velocity.y);
         }
     }
@@ -52,32 +52,38 @@ public class TargetController : MonoBehaviour
         if (col.CompareTag("Collider"))
         {
             goingRight = !goingRight;
-            sprite.flipX = !sprite.flipX;
+            if (isFlippable)
+            {
+                sprite.flipX = !sprite.flipX;
+            }
         }
-        
-        if (col.gameObject.CompareTag("TopCol"))
+
+        if (col.CompareTag("TopCol"))
         {
             Destroy(gameObject);
             //TODO: penalty for not hitting target
         }
-
     }
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.CompareTag("Target"))
+        if (!col.gameObject.CompareTag("Ground") || !col.gameObject.CompareTag("Collider") || !col.gameObject.CompareTag("TopCol"))
         {
             Physics2D.IgnoreCollision(col.collider, GetComponent<Collider2D>());
         }
     }
 
-    private IEnumerator Died()
+    public void Died()
     {
+        Debug.Log("Died");
         _isdead = true;
-        if (_animator != null) _animator.SetTrigger("Dead");
+        if (_animator != null) _animator.SetBool("Dead", true);
         //_rigidbody2D.velocity = new Vector2(0, 0);
         _rigidbody2D.velocity = new Vector2(0, 6);
-        yield return new WaitForSeconds(2f);
+    }
+    
+    public void Destroy()
+    {
         Destroy(gameObject);
     }
 }

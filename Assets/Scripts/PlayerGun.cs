@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
@@ -6,20 +7,33 @@ using UnityEngine;
 
 public class PlayerGun : MonoBehaviour
 {
-    
+    private SpriteRenderer sr;
     private Gun gun;
+
+
     private float fireDown;
     private float reloadDown;
-    private Camera _camera;
+    [SerializeField] private float x2Timer;
     [SerializeField] private AudioSource cameraAudioObject;
     [SerializeField] private Sounds sounds;
-    public bool canFire = true;
-    
-    public Gun GetGun() { return gun; }
+
+    [Header("Power Ups")] private X2Points x2Points;
+    public bool x2 = false;
+    public float x2timer = 5f;
+    public GameObject x2Image;
+
+    public bool UnAmmo = false;
+    public float UnAmmoTimer = 5f;
+    public GameObject UnAmmoImage;
+
+    public Gun GetGun()
+    {
+        return gun;
+    }
 
     public void SetGun(Gun gun)
     {
-        if(gun != null) this.gun = gun;
+        if (gun != null) this.gun = gun;
         this.gun.SetGunAudio(cameraAudioObject);
         BroadcastMessage("UpdateGun", SendMessageOptions.DontRequireReceiver);
     }
@@ -29,9 +43,9 @@ public class PlayerGun : MonoBehaviour
     {
         _camera = Camera.main;
         //SetGun(new Gun("M4", 30, 30, 0.15f, 0.1f, 75, true, sounds.shot, null));
-        SetGun(new Gun("Revolver", 6, 6, 1, 0.1f, 100, false, sounds.shot, null));
+        SetGun(new Gun("Hunting Rifle", 8, 8, 1, 0.1f, 100, false, sounds.shot, null)); //max and loaded ammo 6
         //SetGun(new Gun("Hunting Rifle", 9999, 9999, 0.05f, 0.1f, 175, true, sounds.shot, null));
-
+        // SetGun(new Gun("Admin Gun", 9999, 9999, 0.01f, 0.1f, 100000, true, sounds.shot, null));
     }
 
     // Update is called once per frame
@@ -39,18 +53,44 @@ public class PlayerGun : MonoBehaviour
     {
         if (fireDown > 0) fireDown -= Time.deltaTime;
         if (reloadDown > 0) reloadDown -= Time.deltaTime;
-
-
-        
         if (Input.GetKeyDown(KeyCode.Mouse0) && !gun.Auto) Fire();
         if (Input.GetKey(KeyCode.Mouse0) && gun.Auto) Fire();
+
+        if (x2)
+        {
+            sr = x2Image.GetComponent<SpriteRenderer>();
+            x2timer -= Time.deltaTime;
+            sr.enabled = true;
+            if (x2timer <= 0)
+            {
+                x2timer = 5f;
+                x2 = false;
+                sr.enabled = false;
+            }
+        }
+
+        if (UnAmmo)
+        {
+            if (gun.LoadedAmmo < gun.MaxAmmo)
+            {
+                gun.ChangeAmmo(gun.MaxAmmo);
+            }
+            sr = UnAmmoImage.GetComponent<SpriteRenderer>();
+            UnAmmoTimer -= Time.deltaTime;
+            sr.enabled = true;
+            if (UnAmmoTimer <= 0)
+            {
+                UnAmmoTimer = 5f;
+                UnAmmo = false;
+                sr.enabled = false;
+            }
+        }
     }
-    
+
     private void Fire()
     {
         if (canFire)
         {
-            Debug.Log("pew");
             if (fireDown > 0) return;
             if (gun.LoadedAmmo <= 0)
             {
@@ -58,15 +98,32 @@ public class PlayerGun : MonoBehaviour
                 return;
             }
 
-            gun.playFireSound();
-            fireDown = gun.FireRate;
-            gun.ChangeAmmo(-1);
-            BroadcastMessage("Fired", SendMessageOptions.DontRequireReceiver);
+        gun.playFireSound();
+        fireDown = gun.FireRate;
+        gun.ChangeAmmo(-1);
+        BroadcastMessage("Fired", SendMessageOptions.DontRequireReceiver);
 
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
 
-            if (hit)
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+
+        if (hit)
+        {
+            if (hit.collider.gameObject.CompareTag("score_x2"))
+            {
+                x2Points = hit.collider.gameObject.GetComponent<X2Points>();
+                // hit.collider.gameObject.SendMessage("Hit", gun.Damage, SendMessageOptions.DontRequireReceiver);
+                hit.collider.gameObject.SendMessage("x2Points", SendMessageOptions.DontRequireReceiver);
+            }
+            else if (hit.collider.gameObject.CompareTag("Unlimited"))
+            {
+                hit.collider.gameObject.SendMessage("UnlimitedAmmo", SendMessageOptions.DontRequireReceiver);
+            }
+            else if (hit.collider.gameObject.CompareTag("Clear"))
+            {
+                hit.collider.gameObject.SendMessage("ClearEnemies", SendMessageOptions.DontRequireReceiver);
+            }
+            else
             {
                 hit.collider.gameObject.SendMessage("Hit", gun.Damage, SendMessageOptions.DontRequireReceiver);
             }
@@ -76,17 +133,19 @@ public class PlayerGun : MonoBehaviour
 
 public class Gun
 {
-    public string Name { get;}
-    public int MaxAmmo { get;}
-    public int LoadedAmmo { get; private set; }
-    public float FireRate { get;}
-    public float ShotWidth { get;}
-    public int Damage { get;}
+    public string Name { get; }
+    public int MaxAmmo { get; }
+    public int LoadedAmmo { get; set; }
+    public float FireRate { get; }
+    public float ShotWidth { get; }
+    public int Damage { get; }
     public bool Auto { get; }
     private AudioClip FireSound { get; }
     private AudioClip EmptySound { get; }
     private AudioSource gunAudio;
-    public Gun(string name, int maxAmmo, int loadedAmmo, float fireRate, float shotWidth, int damage, bool auto, [CanBeNull] AudioClip fireSound, [CanBeNull] AudioClip emptySound)
+
+    public Gun(string name, int maxAmmo, int loadedAmmo, float fireRate, float shotWidth, int damage, bool auto,
+        [CanBeNull] AudioClip fireSound, [CanBeNull] AudioClip emptySound)
     {
         Name = name;
         MaxAmmo = maxAmmo;
@@ -112,7 +171,7 @@ public class Gun
 
     public void playFireSound()
     {
-        Debug.Log(FireSound);
+        // Debug.Log(FireSound);
         if (FireSound != null)
         {
             gunAudio.clip = FireSound;
