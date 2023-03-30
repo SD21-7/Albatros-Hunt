@@ -13,7 +13,6 @@ public class PlayerGun : MonoBehaviour
 
     private float fireDown;
     private float reloadDown;
-
     [SerializeField] private float x2Timer;
     [SerializeField] private AudioSource cameraAudioObject;
     [SerializeField] private Sounds sounds;
@@ -42,6 +41,7 @@ public class PlayerGun : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _camera = Camera.main;
         //SetGun(new Gun("M4", 30, 30, 0.15f, 0.1f, 75, true, sounds.shot, null));
         SetGun(new Gun("Hunting Rifle", 8, 8, 1, 0.1f, 100, false, sounds.shot, null)); //max and loaded ammo 6
         //SetGun(new Gun("Hunting Rifle", 9999, 9999, 0.05f, 0.1f, 175, true, sounds.shot, null));
@@ -89,12 +89,14 @@ public class PlayerGun : MonoBehaviour
 
     private void Fire()
     {
-        if (fireDown > 0) return;
-        if (gun.LoadedAmmo <= 0)
+        if (canFire)
         {
-            gun.playEmptySound();
-            return;
-        }
+            if (fireDown > 0) return;
+            if (gun.LoadedAmmo <= 0)
+            {
+                gun.playEmptySound();
+                return;
+            }
 
         gun.playFireSound();
         fireDown = gun.FireRate;

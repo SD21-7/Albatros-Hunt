@@ -9,19 +9,35 @@ using UnityEngine.EventSystems;
 
 public class ReloadScript : MonoBehaviour
 {
-    Vector3 originalPos;
+    public PlayerGun playerGun;
+    public GameObject Bullet;
+   private Vector3 originalPos;
+   private bool snapBack = false;
 
     private void Start()
     {
-        originalPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
+        playerGun = GameObject.FindWithTag("Player").GetComponent<PlayerGun>();
+         originalPos = transform.position;
     }
 
-    private void OnTriggerEnter2D(Collider2D col)
+    private void Update()
+    {
+        if (Input.GetMouseButtonUp(0) && snapBack)
+        {
+            transform.position = originalPos;
+            snapBack = false;
+            Debug.Log("hallo");
+            AmmoUp();
+ 
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D col)
      {
-         if (col.gameObject.tag == "Gun")
+
+         if (col.gameObject.CompareTag("Gun"))
          {
-             AmmoUp();
-               gameObject.transform.position = originalPos;
+             snapBack = true;
          }
      }
     
@@ -44,9 +60,19 @@ public class ReloadScript : MonoBehaviour
         transform.position = GetMousePosition() + mousePositionOffset;
     }
 
+    private void OnMouseOver()
+    {
+        playerGun.canFire = false;
+    }
+    
+    private void OnMouseExit()
+    {
+        playerGun.canFire = true;
+    }
+
     private void AmmoUp()
     {
-        
+        Debug.Log("hugb");
     }
     
 }
