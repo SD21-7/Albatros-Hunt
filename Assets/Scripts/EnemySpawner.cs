@@ -13,31 +13,36 @@ public class EnemySpawner : MonoBehaviour
     private int spawnAmount;
     private int totalEnemies;
     private int spawnedEnemies;
-    private int difficulty = 0;
+    public int difficulty = 0;
+    public bool newDifficulty = true;
     private float timer;
     private bool pauseSpawns;
 
     [SerializeField] private List<GameObject> prefabs;
     [SerializeField] private Transform SpawnPosition;
 
-    [Header("Normal Mode")] [SerializeField] [Range(0, 10f)]
-    private float normalSpawnTimer = 3;
+    [Header("Normal Mode")]
+    [SerializeField] [Range(0, 10f)] private float normalSpawnTimer = 3;
     [SerializeField] private int normalSpawnAmount = 1;
     [SerializeField] private int normalTotalEnemies = 10;
 
-    [Header("Hard Mode")] [SerializeField] [Range(0, 10f)]
-    private float hardSpawnTimer = 2;
+    [Header("Hard Mode")] 
+    [SerializeField] [Range(0, 10f)] private float hardSpawnTimer = 2;
     [SerializeField] private int hardSpawnAmount = 2;
     [SerializeField] private int hardTotalEnemies = 20;
 
-    [Header("Extreme Mode")] [SerializeField] [Range(0, 10f)]
-    private float extremeSpawnTimer = 1;
+    [Header("Extreme Mode")]
+    [SerializeField] [Range(0, 10f)]private float extremeSpawnTimer = 1;
     [SerializeField] private int extremeSpawnAmount = 2;
     [SerializeField] private int extremeTotalEnemies = 25;
 
     private void Start()
     {
-        setDifficulty(difficulty);
+        // newDifficulty = true;
+        // if (newDifficulty)
+        // {
+            setDifficulty(difficulty);
+        // }
     }
 
     private void Update()
@@ -67,6 +72,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void levelEnd()
     {
+        // newDifficulty = true;
         Debug.Log("Next difficulty");
         setDifficulty(++difficulty);
     }
@@ -81,6 +87,7 @@ public class EnemySpawner : MonoBehaviour
                 spawnTimer = hardSpawnTimer;
                 spawnAmount = hardSpawnAmount;
                 totalEnemies = hardTotalEnemies;
+                // newDifficulty = false;
                 break;
             }
             case 2:
@@ -88,6 +95,7 @@ public class EnemySpawner : MonoBehaviour
                 spawnTimer = extremeSpawnTimer;
                 spawnAmount = extremeSpawnAmount;
                 totalEnemies = extremeTotalEnemies;
+                // newDifficulty = false;
                 break;
             }
             default:
@@ -95,6 +103,7 @@ public class EnemySpawner : MonoBehaviour
                 spawnTimer = normalSpawnTimer;
                 spawnAmount = normalSpawnAmount;
                 totalEnemies = normalTotalEnemies;
+                // newDifficulty = false;
                 break;
             }
         }
