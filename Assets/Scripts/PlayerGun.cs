@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public class PlayerGun : MonoBehaviour
 {
@@ -25,6 +27,8 @@ public class PlayerGun : MonoBehaviour
     public bool UnAmmo = false;
     public float UnAmmoTimer = 5f;
     public GameObject UnAmmoImage;
+    
+    public TextMeshProUGUI ammoText;
 
     public Gun GetGun()
     {
@@ -86,6 +90,7 @@ public class PlayerGun : MonoBehaviour
                 sr.enabled = false;
             }
         }
+        ammoText.text = "Bullets:" + gun.LoadedAmmo + "/" + gun.MaxAmmo;
     }
 
     private void Fire()
