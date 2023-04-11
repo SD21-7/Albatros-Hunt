@@ -26,6 +26,9 @@ public class PlayerGun : MonoBehaviour
     public float UnAmmoTimer = 5f;
     public GameObject UnAmmoImage;
 
+    public bool canFire;
+    private Camera _camera;
+
     public Gun GetGun()
     {
         return gun;
@@ -41,16 +44,18 @@ public class PlayerGun : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        PlayerPrefs.SetInt("Score", 99999);
         _camera = Camera.main;
-        //SetGun(new Gun("M4", 30, 30, 0.15f, 0.1f, 75, true, sounds.shot, null));
-        SetGun(new Gun("Hunting Rifle", 8, 8, 1, 0.1f, 100, false, sounds.shot, null)); //max and loaded ammo 6
+        SetGun(new Gun("M4", 30, 30, 0.15f, 0.1f, 200, true, sounds.shot, null));
+        //SetGun(new Gun("Hunting Rifle", 8, 8, 1, 0.1f, 100, false, sounds.shot, null)); //max and loaded ammo 6
         //SetGun(new Gun("Hunting Rifle", 9999, 9999, 0.05f, 0.1f, 175, true, sounds.shot, null));
-        // SetGun(new Gun("Admin Gun", 9999, 9999, 0.01f, 0.1f, 100000, true, sounds.shot, null));
+        //SetGun(new Gun("Admin Gun", 9999, 9999, 0.01f, 0.1f, 100000, true, sounds.shot, null));
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(gun.Name);
         if (fireDown > 0) fireDown -= Time.deltaTime;
         if (reloadDown > 0) reloadDown -= Time.deltaTime;
         if (Input.GetKeyDown(KeyCode.Mouse0) && !gun.Auto) Fire();
@@ -75,6 +80,7 @@ public class PlayerGun : MonoBehaviour
             {
                 gun.ChangeAmmo(gun.MaxAmmo);
             }
+
             sr = UnAmmoImage.GetComponent<SpriteRenderer>();
             UnAmmoTimer -= Time.deltaTime;
             sr.enabled = true;
@@ -89,7 +95,9 @@ public class PlayerGun : MonoBehaviour
 
     private void Fire()
     {
-        if (canFire)
+        Debug.Log("e");
+        //if (canFire)
+        if(true)
         {
             if (fireDown > 0) return;
             if (gun.LoadedAmmo <= 0)
@@ -98,32 +106,16 @@ public class PlayerGun : MonoBehaviour
                 return;
             }
 
-        gun.playFireSound();
-        fireDown = gun.FireRate;
-        gun.ChangeAmmo(-1);
-        BroadcastMessage("Fired", SendMessageOptions.DontRequireReceiver);
+            gun.playFireSound();
+            fireDown = gun.FireRate;
+            gun.ChangeAmmo(-1);
+            BroadcastMessage("Fired", SendMessageOptions.DontRequireReceiver);
 
 
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+            Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
 
-        if (hit)
-        {
-            if (hit.collider.gameObject.CompareTag("score_x2"))
-            {
-                x2Points = hit.collider.gameObject.GetComponent<X2Points>();
-                // hit.collider.gameObject.SendMessage("Hit", gun.Damage, SendMessageOptions.DontRequireReceiver);
-                hit.collider.gameObject.SendMessage("x2Points", SendMessageOptions.DontRequireReceiver);
-            }
-            else if (hit.collider.gameObject.CompareTag("Unlimited"))
-            {
-                hit.collider.gameObject.SendMessage("UnlimitedAmmo", SendMessageOptions.DontRequireReceiver);
-            }
-            else if (hit.collider.gameObject.CompareTag("Clear"))
-            {
-                hit.collider.gameObject.SendMessage("ClearEnemies", SendMessageOptions.DontRequireReceiver);
-            }
-            else
+            if (hit)
             {
                 hit.collider.gameObject.SendMessage("Hit", gun.Damage, SendMessageOptions.DontRequireReceiver);
             }
@@ -167,6 +159,11 @@ public class Gun
     {
         LoadedAmmo += num;
         if (LoadedAmmo > MaxAmmo) LoadedAmmo = MaxAmmo;
+    }
+
+    public void SetAmmo(int num)
+    {
+        LoadedAmmo = num;
     }
 
     public void playFireSound()
