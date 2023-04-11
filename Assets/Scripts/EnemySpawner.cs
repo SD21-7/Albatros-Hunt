@@ -3,10 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = System.Random;
 
 public class EnemySpawner : MonoBehaviour
 {
+    public PowerUpSpawner powerUpSpawner;
+    
     [Range(0, 10f)] private float spawnTimer;
     [Range(0, 6f)] private float spawnRange;
 
@@ -16,7 +19,8 @@ public class EnemySpawner : MonoBehaviour
     public int difficulty = 0;
     public bool newDifficulty = true;
     private float timer;
-    private bool pauseSpawns;
+    public bool pauseSpawns;
+    [SerializeField] GameObject TargetParent;
 
     [SerializeField] private List<GameObject> prefabs;
     [SerializeField] private Transform SpawnPosition;
@@ -38,17 +42,33 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
-        // newDifficulty = true;
-        // if (newDifficulty)
-        // {
+        powerUpSpawner = GetComponentInParent<PowerUpSpawner>();
+        
+        newDifficulty = true;
+        if (newDifficulty)
+        {
             setDifficulty(difficulty);
-        // }
+            powerUpSpawner.setDifficulty(difficulty);
+        }
     }
 
     private void Update()
     {
+        // Debug.Log("EnemyDiffNew" + newDifficulty);
         if (timer > 0) timer -= Time.deltaTime;
         else SpawnEnemies();
+
+        if (GameObject.FindGameObjectWithTag("Target") == null && difficulty != 2)
+        {
+            newDifficulty = true;
+            setDifficulty(++difficulty);
+            powerUpSpawner.setDifficulty(difficulty);
+        }
+        
+        if (difficulty == 2 && GameObject.FindGameObjectWithTag("Target") == null && spawnedEnemies >= totalEnemies)
+        {
+            SceneManager.LoadScene("End");
+        }
     }
 
     private void SpawnEnemies()
@@ -61,20 +81,14 @@ public class EnemySpawner : MonoBehaviour
             Vector3 SpawnOffset = new(UnityEngine.Random.Range(-spawnRange, spawnRange), 0, 0);
             GameObject spawned = Instantiate(prefabs[new Random().Next(prefabs.Count)]);
             spawned.transform.position = SpawnPosition.position + SpawnOffset;
+            spawned.transform.parent = TargetParent.transform;
             spawnedEnemies++;
         }
 
         if (spawnedEnemies >= totalEnemies)
         {
-            levelEnd();
+            pauseSpawns = true;
         }
-    }
-
-    private void levelEnd()
-    {
-        // newDifficulty = true;
-        Debug.Log("Next difficulty");
-        setDifficulty(++difficulty);
     }
 
     private void setDifficulty(int diff)
@@ -87,7 +101,7 @@ public class EnemySpawner : MonoBehaviour
                 spawnTimer = hardSpawnTimer;
                 spawnAmount = hardSpawnAmount;
                 totalEnemies = hardTotalEnemies;
-                // newDifficulty = false;
+                pauseSpawns = false;
                 break;
             }
             case 2:
@@ -95,7 +109,7 @@ public class EnemySpawner : MonoBehaviour
                 spawnTimer = extremeSpawnTimer;
                 spawnAmount = extremeSpawnAmount;
                 totalEnemies = extremeTotalEnemies;
-                // newDifficulty = false;
+                pauseSpawns = false;
                 break;
             }
             default:
@@ -103,9 +117,11 @@ public class EnemySpawner : MonoBehaviour
                 spawnTimer = normalSpawnTimer;
                 spawnAmount = normalSpawnAmount;
                 totalEnemies = normalTotalEnemies;
+                pauseSpawns = false;
                 // newDifficulty = false;
                 break;
             }
         }
+        newDifficulty = false;
     }
 }

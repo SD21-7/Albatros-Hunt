@@ -12,12 +12,12 @@ public class PowerUpSpawner : MonoBehaviour
     [Range(0, 6f)] private float spawnTimer;
     [Range(0, 6f)] private float spawnRange;
 
-    private int spawnAmount;
+    private int spawnAmount = 1;
     private int totalPowerUps;
     private int spawnedPowerUps;
-    private int difficulty = 0;
     private float timer;
     private bool pauseSpawns;
+    [SerializeField] GameObject PowerUpParent;
 
     [SerializeField] private List<GameObject> prefabs;
     [SerializeField] private Transform SpawnPosition;
@@ -26,12 +26,10 @@ public class PowerUpSpawner : MonoBehaviour
     private List<GameObject> normalPrefabs;
 
     [SerializeField] [Range(0, 10f)] private float normalSpawnTimer = 3;
-    [SerializeField] private int normalSpawnAmount = 1;
     [SerializeField] private int normalTotalPowerUps = 1;
 
     [Header("Hard Mode")] [SerializeField] private List<GameObject> hardPrefabs;
     [SerializeField] [Range(0, 10f)] private float hardSpawnTimer = 2;
-    [SerializeField] private int hardSpawnAmount = 1;
     [SerializeField] private int hardTotalPowerUps = 3;
 
 
@@ -39,7 +37,6 @@ public class PowerUpSpawner : MonoBehaviour
     private List<GameObject> extremePrefabs;
 
     [SerializeField] [Range(0, 10f)] private float extremeSpawnTimer = 1;
-    [SerializeField] private int extremeSpawnAmount = 1;
     [SerializeField] private int extremeTotalPowerUps = 6;
 
     private void Start()
@@ -49,12 +46,19 @@ public class PowerUpSpawner : MonoBehaviour
 
     private void Update()
     {
+        // Debug.Log("");
+        // Debug.Log("PowerUpDiffNew" + enemySpawner.newDifficulty);
+        // Debug.Log(timer);
         // if (enemySpawner.newDifficulty)
         // {
-        difficulty = enemySpawner.difficulty;
-        setDifficulty(difficulty);
+        //     setDifficulty(enemySpawner.difficulty);
         // }
-        timer += Time.deltaTime;
+
+        if (spawnedPowerUps < totalPowerUps)
+        {
+            timer += Time.deltaTime;
+        }
+
         if (timer >= spawnTimer) SpawnPowerUps();
     }
 
@@ -68,31 +72,32 @@ public class PowerUpSpawner : MonoBehaviour
                 Vector3 SpawnOffset = new(UnityEngine.Random.Range(-spawnRange, spawnRange), 0, 0);
                 GameObject spawned = Instantiate(prefabs[new Random().Next(prefabs.Count)]);
                 spawned.transform.position = SpawnPosition.position + SpawnOffset;
+                spawned.transform.parent = PowerUpParent.transform;
                 spawnedPowerUps++;
             }
         }
+
         timer = 0;
     }
 
     public void setDifficulty(int difficulty)
     {
+        Debug.Log("PowerUpDiff" + difficulty);
+        spawnedPowerUps = 0;
         switch (difficulty)
         {
             case 0:
                 spawnTimer = normalSpawnTimer;
-                spawnAmount = normalSpawnAmount;
                 prefabs = normalPrefabs;
                 totalPowerUps = normalTotalPowerUps;
                 break;
             case 1:
                 spawnTimer = hardSpawnTimer;
-                spawnAmount = hardSpawnAmount;
                 prefabs = hardPrefabs;
                 totalPowerUps = hardTotalPowerUps;
                 break;
             case 2:
                 spawnTimer = extremeSpawnTimer;
-                spawnAmount = extremeSpawnAmount;
                 prefabs = extremePrefabs;
                 totalPowerUps = extremeTotalPowerUps;
                 break;

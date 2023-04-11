@@ -795,7 +795,7 @@ Transform:
   - {fileID: 600956261}
   - {fileID: 449464034}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &600956260
 PrefabInstance:
@@ -879,6 +879,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3260326592580307198, guid: 461c970a896924f988832f53fac30c48, type: 3}
   m_PrefabInstance: {fileID: 600956260}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &609514016
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 609514017}
+  m_Layer: 0
+  m_Name: PowerUp
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &609514017
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609514016}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.641458, y: 4.4135065, z: 0.018027946}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &742310939
 GameObject:
   m_ObjectHideFlags: 0
@@ -1614,6 +1645,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 470213949}
     - target: {fileID: 6116107897124077740, guid: b407520e34ecf4abd99afd49c4812000, type: 3}
+      propertyPath: TargetParent
+      value: 
+      objectReference: {fileID: 470213949}
+    - target: {fileID: 6116107897124077740, guid: b407520e34ecf4abd99afd49c4812000, type: 3}
+      propertyPath: normalSpawnTimer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6116107897124077740, guid: b407520e34ecf4abd99afd49c4812000, type: 3}
       propertyPath: prefabs.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1708,25 +1747,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cb4975fb071a4f888a2d70f6f9ca07d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PowerUpParent: {fileID: 609514016}
   prefabs: []
   SpawnPosition: {fileID: 1480101360}
   normalPrefabs:
   - {fileID: 4848018263292952720, guid: 7a57fb39d42f745e0aaae3476d75e248, type: 3}
-  normalSpawnTimer: 5
-  normalSpawnAmount: 1
+  normalSpawnTimer: 0.11
   normalTotalPowerUps: 1
   hardPrefabs:
   - {fileID: 4848018263292952720, guid: 7a57fb39d42f745e0aaae3476d75e248, type: 3}
   - {fileID: 7476767884813139259, guid: 0c0c7b47042cc44a4ba44ae4672906c7, type: 3}
   hardSpawnTimer: 7
-  hardSpawnAmount: 3
   hardTotalPowerUps: 3
   extremePrefabs:
   - {fileID: 4848018263292952720, guid: 7a57fb39d42f745e0aaae3476d75e248, type: 3}
   - {fileID: 4066995327541025585, guid: 6b5c1b43304364e36b234161e44b5832, type: 3}
   - {fileID: 7476767884813139259, guid: 0c0c7b47042cc44a4ba44ae4672906c7, type: 3}
   extremeSpawnTimer: 6
-  extremeSpawnAmount: 6
   extremeTotalPowerUps: 6
 --- !u!4 &1480101360 stripped
 Transform:
@@ -2057,7 +2094,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5991104722586984267, guid: e5db329ee8649497297b19b73c87916b, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 5991104722586984267, guid: e5db329ee8649497297b19b73c87916b, type: 3}
       propertyPath: m_LocalScale.x
