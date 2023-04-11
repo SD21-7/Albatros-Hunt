@@ -1,27 +1,44 @@
+ using System;
  using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+ using DefaultNamespace;
+ using TMPro;
+ using UnityEngine;
 
 public class MarketGun : MonoBehaviour
 {
     [SerializeReference] private int price;
-    [SerializeReference] private string name;
-    [SerializeReference] private int maxAmmo;
-    [SerializeReference] private int loadedAmmo;
-    [SerializeReference] private float fireRate;
-    [SerializeReference] private float shotWidth;
-    [SerializeReference] private int damage;
-    [SerializeReference] private bool auto; 
-    [SerializeReference] private AudioClip fireSound;
-    [SerializeReference] private AudioClip emptySound;
+    [SerializeReference] private string gunName;
+    
+    [SerializeReference] private SpriteRenderer sr;
+    private bool isBought;
+
+    private TextMeshPro text;
     // Start is called before the first frame update
     public void Hit()
     {
-        if (PlayerPrefs.HasKey("Score") && PlayerPrefs.GetInt("Score") >= price)
+        if (PlayerPrefs.HasKey("Score") && PlayerPrefs.GetInt("Score") >= price && !isBought)
         {
-            GameObject.FindWithTag("Player").GetComponent<PlayerGun>().SetGun(new Gun(name, maxAmmo, loadedAmmo,
-                fireRate, shotWidth, damage, auto, fireSound, emptySound));
+            int score = PlayerPrefs.GetInt("Score");
+            score -= price;
+            PlayerPrefs.SetInt("Score", score);
+            PlayerPrefs.SetString("Gun", gunName);
+            GameObject.FindWithTag("Player").BroadcastMessage("UpdateGun");
+            isBought = true;
+            text.text = "<s>" + text.text + "</s>";
+            sr.color = Color.gray;
         }
     }
 
+    private void Start()
+    {
+        text = GetComponent<TextMeshPro>();
+        Gun gun = GunDict.Guns[gunName];
+        if (gun == null)
+        {
+            Debug.LogError("Gun is null!");
+            throw new NullReferenceException();
+        }
+        text.text = gun.Name + "<br> price: " + price;
+    }
 }

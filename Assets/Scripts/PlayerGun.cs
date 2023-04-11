@@ -5,6 +5,7 @@ using DefaultNamespace;
 using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class PlayerGun : MonoBehaviour
 {
@@ -59,7 +60,7 @@ public class PlayerGun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(gun.Name);
+        Debug.Log(PlayerPrefs.GetInt("Score"));
         if (fireDown > 0) fireDown -= Time.deltaTime;
         if (reloadDown > 0) reloadDown -= Time.deltaTime;
         if (Input.GetKeyDown(KeyCode.Mouse0) && !gun.Auto) Fire();
@@ -99,7 +100,6 @@ public class PlayerGun : MonoBehaviour
 
     private void Fire()
     {
-        Debug.Log("e");
         //if (canFire)
         if(true)
         {
