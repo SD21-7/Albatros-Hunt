@@ -1,18 +1,16 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GunDict : MonoBehaviour
+namespace DefaultNamespace
 {
-    // Start is called before the first frame update
-    void Start()
+    public static class GunDict
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public static readonly IDictionary<string, Gun> Guns = new Dictionary<string, Gun> {
+            {"HuntRifle", new Gun("Hunting Rifle", 8, 8, 1, 0.1f, 100, false, "8bitShot", null)},
+            { "M4", new Gun("M4", 30, 30, 0.15f, 0.1f, 75, true, null, null)},
+            {"Admin", new Gun("Admin Gun", 9999, 9999, 0.01f, 0.1f, 100000, true, null, null)}
+        };
+    
     }
 }
+
