@@ -6,13 +6,16 @@ using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
+using TMPro;
+using UnityEngine.UI;
+
 
 public class PlayerGun : MonoBehaviour
 {
     private SpriteRenderer sr;
     private Gun gun;
 
-
+    public bool canFire = true;
     private float fireDown;
     private float reloadDown;
     [SerializeField] private float x2Timer;
@@ -26,6 +29,8 @@ public class PlayerGun : MonoBehaviour
     public bool UnAmmo = false;
     public float UnAmmoTimer = 5f;
     public GameObject UnAmmoImage;
+    
+    public TextMeshProUGUI ammoText;
 
     public bool canFire;
     private Camera _camera;
@@ -96,6 +101,7 @@ public class PlayerGun : MonoBehaviour
                 sr.enabled = false;
             }
         }
+        ammoText.text = "Bullets:" + gun.LoadedAmmo + "/" + gun.MaxAmmo;
     }
 
     private void Fire()
@@ -115,13 +121,29 @@ public class PlayerGun : MonoBehaviour
             gun.ChangeAmmo(-1);
             BroadcastMessage("Fired", SendMessageOptions.DontRequireReceiver);
 
-
             Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
 
             if (hit)
             {
-                hit.collider.gameObject.SendMessage("Hit", gun.Damage, SendMessageOptions.DontRequireReceiver);
+                if (hit.collider.gameObject.CompareTag("score_x2"))
+                {
+                    x2Points = hit.collider.gameObject.GetComponent<X2Points>();
+                    // hit.collider.gameObject.SendMessage("Hit", gun.Damage, SendMessageOptions.DontRequireReceiver);
+                    hit.collider.gameObject.SendMessage("x2Points", SendMessageOptions.DontRequireReceiver);
+                }
+                else if (hit.collider.gameObject.CompareTag("Unlimited"))
+                {
+                    hit.collider.gameObject.SendMessage("UnlimitedAmmo", SendMessageOptions.DontRequireReceiver);
+                }
+                else if (hit.collider.gameObject.CompareTag("Clear"))
+                {
+                    hit.collider.gameObject.SendMessage("ClearEnemies", SendMessageOptions.DontRequireReceiver);
+                }
+                else
+                {
+                    hit.collider.gameObject.SendMessage("Hit", gun.Damage, SendMessageOptions.DontRequireReceiver);
+                }
             }
         }
     }
@@ -163,6 +185,7 @@ public class Gun
 
     public void ChangeAmmo(int num)
     {
+        Debug.Log("Changing ammo by " + num);
         LoadedAmmo += num;
         if (LoadedAmmo > MaxAmmo) LoadedAmmo = MaxAmmo;
     }

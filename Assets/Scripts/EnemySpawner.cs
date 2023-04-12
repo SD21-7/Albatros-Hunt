@@ -3,47 +3,72 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = System.Random;
 
 public class EnemySpawner : MonoBehaviour
 {
+    public PowerUpSpawner powerUpSpawner;
+    
     [Range(0, 10f)] private float spawnTimer;
     [Range(0, 6f)] private float spawnRange;
 
     private int spawnAmount;
     private int totalEnemies;
     private int spawnedEnemies;
-    private int difficulty = 0;
+    public int difficulty = 0;
+    public bool newDifficulty = true;
     private float timer;
-    private bool pauseSpawns;
+    public bool pauseSpawns;
+    [SerializeField] GameObject TargetParent;
 
     [SerializeField] private List<GameObject> prefabs;
     [SerializeField] private Transform SpawnPosition;
 
-    [Header("Normal Mode")] [SerializeField] [Range(0, 10f)]
-    private float normalSpawnTimer = 3;
+    [Header("Normal Mode")]
+    [SerializeField] [Range(0, 10f)] private float normalSpawnTimer = 3;
     [SerializeField] private int normalSpawnAmount = 1;
     [SerializeField] private int normalTotalEnemies = 10;
 
-    [Header("Hard Mode")] [SerializeField] [Range(0, 10f)]
-    private float hardSpawnTimer = 2;
+    [Header("Hard Mode")] 
+    [SerializeField] [Range(0, 10f)] private float hardSpawnTimer = 2;
     [SerializeField] private int hardSpawnAmount = 2;
     [SerializeField] private int hardTotalEnemies = 20;
 
-    [Header("Extreme Mode")] [SerializeField] [Range(0, 10f)]
-    private float extremeSpawnTimer = 1;
+    [Header("Extreme Mode")]
+    [SerializeField] [Range(0, 10f)]private float extremeSpawnTimer = 1;
     [SerializeField] private int extremeSpawnAmount = 2;
     [SerializeField] private int extremeTotalEnemies = 25;
 
     private void Start()
     {
-        setDifficulty(difficulty);
+        powerUpSpawner = GetComponentInParent<PowerUpSpawner>();
+        
+        newDifficulty = true;
+        if (newDifficulty)
+        {
+            setDifficulty(difficulty);
+            powerUpSpawner.setDifficulty(difficulty);
+        }
     }
 
     private void Update()
     {
+        // Debug.Log("EnemyDiffNew" + newDifficulty);
         if (timer > 0) timer -= Time.deltaTime;
         else SpawnEnemies();
+
+        if (GameObject.FindGameObjectWithTag("Target") == null && difficulty != 2)
+        {
+            newDifficulty = true;
+            setDifficulty(++difficulty);
+            powerUpSpawner.setDifficulty(difficulty);
+        }
+        
+        if (difficulty == 2 && GameObject.FindGameObjectWithTag("Target") == null && spawnedEnemies >= totalEnemies)
+        {
+            SceneManager.LoadScene("End");
+        }
     }
 
     private void SpawnEnemies()
@@ -56,19 +81,14 @@ public class EnemySpawner : MonoBehaviour
             Vector3 SpawnOffset = new(UnityEngine.Random.Range(-spawnRange, spawnRange), 0, 0);
             GameObject spawned = Instantiate(prefabs[new Random().Next(prefabs.Count)]);
             spawned.transform.position = SpawnPosition.position + SpawnOffset;
+            spawned.transform.parent = TargetParent.transform;
             spawnedEnemies++;
         }
 
         if (spawnedEnemies >= totalEnemies)
         {
-            levelEnd();
+            pauseSpawns = true;
         }
-    }
-
-    private void levelEnd()
-    {
-        Debug.Log("Next difficulty");
-        setDifficulty(++difficulty);
     }
 
     private void setDifficulty(int diff)
@@ -81,6 +101,7 @@ public class EnemySpawner : MonoBehaviour
                 spawnTimer = hardSpawnTimer;
                 spawnAmount = hardSpawnAmount;
                 totalEnemies = hardTotalEnemies;
+                pauseSpawns = false;
                 break;
             }
             case 2:
@@ -88,6 +109,7 @@ public class EnemySpawner : MonoBehaviour
                 spawnTimer = extremeSpawnTimer;
                 spawnAmount = extremeSpawnAmount;
                 totalEnemies = extremeTotalEnemies;
+                pauseSpawns = false;
                 break;
             }
             default:
@@ -95,8 +117,11 @@ public class EnemySpawner : MonoBehaviour
                 spawnTimer = normalSpawnTimer;
                 spawnAmount = normalSpawnAmount;
                 totalEnemies = normalTotalEnemies;
+                pauseSpawns = false;
+                // newDifficulty = false;
                 break;
             }
         }
+        newDifficulty = false;
     }
 }
