@@ -6,7 +6,7 @@ public class Unlimited_Ammo : MonoBehaviour
 {
     public PlayerGun playerGun;
     
-    public void UnlimitedAmmo()
+    public void Hit()
     {
         playerGun = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerGun>();
         playerGun.UnAmmo = true;

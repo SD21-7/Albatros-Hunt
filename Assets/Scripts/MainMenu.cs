@@ -13,6 +13,7 @@ public class MainMenu : MonoBehaviour
     
     public void PlayGame()
     {
+        PlayerPrefs.SetString("Gun", "HuntRifle");
         SceneManager.LoadScene(1);
     }
 

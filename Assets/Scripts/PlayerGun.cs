@@ -1,11 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DefaultNamespace;
 using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using TMPro;
 using UnityEngine.UI;
+
 
 public class PlayerGun : MonoBehaviour
 {
@@ -17,7 +20,6 @@ public class PlayerGun : MonoBehaviour
     private float reloadDown;
     [SerializeField] private float x2Timer;
     [SerializeField] private AudioSource cameraAudioObject;
-    [SerializeField] private Sounds sounds;
 
     [Header("Power Ups")] private X2Points x2Points;
     public bool x2 = false;
@@ -30,31 +32,40 @@ public class PlayerGun : MonoBehaviour
     
     public TextMeshProUGUI ammoText;
 
+    public bool canFire;
+    private Camera _camera;
+
     public Gun GetGun()
     {
         return gun;
     }
 
-    public void SetGun(Gun gun)
+    //BroadcastMessage("UpdateGun", SendMessageOptions.DontRequireReceiver);
+    public void UpdateGun()
     {
-        if (gun != null) this.gun = gun;
-        this.gun.SetGunAudio(cameraAudioObject);
-        BroadcastMessage("UpdateGun", SendMessageOptions.DontRequireReceiver);
+        Gun newGun = GunDict.Guns[PlayerPrefs.GetString("Gun")];
+        if (newGun == null) 
+        {
+            Debug.LogError("Gun is null");
+            return;
+        }
+        gun = newGun;
+        gun.SetGunAudio(cameraAudioObject);
+        Debug.Log("new gun is" + gun.Name);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        // _camera = Camera.main;
-        //SetGun(new Gun("M4", 30, 30, 0.15f, 0.1f, 75, true, sounds.shot, null));
-        SetGun(new Gun("Hunting Rifle", 8, 8, 1, 0.1f, 100, false, sounds.shot, null)); //max and loaded ammo 6
-        //SetGun(new Gun("Hunting Rifle", 9999, 9999, 0.05f, 0.1f, 175, true, sounds.shot, null));
-        // SetGun(new Gun("Admin Gun", 9999, 9999, 0.01f, 0.1f, 100000, true, sounds.shot, null));
+        PlayerPrefs.SetInt("Score", 99999);
+        _camera = Camera.main;
+        UpdateGun();
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(PlayerPrefs.GetInt("Score"));
         if (fireDown > 0) fireDown -= Time.deltaTime;
         if (reloadDown > 0) reloadDown -= Time.deltaTime;
         if (Input.GetKeyDown(KeyCode.Mouse0) && !gun.Auto) Fire();
@@ -95,7 +106,8 @@ public class PlayerGun : MonoBehaviour
 
     private void Fire()
     {
-        if (canFire)
+        //if (canFire)
+        if(true)
         {
             if (fireDown > 0) return;
             if (gun.LoadedAmmo <= 0)
@@ -109,8 +121,7 @@ public class PlayerGun : MonoBehaviour
             gun.ChangeAmmo(-1);
             BroadcastMessage("Fired", SendMessageOptions.DontRequireReceiver);
 
-
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
 
             if (hit)
@@ -152,7 +163,7 @@ public class Gun
     private AudioSource gunAudio;
 
     public Gun(string name, int maxAmmo, int loadedAmmo, float fireRate, float shotWidth, int damage, bool auto,
-        [CanBeNull] AudioClip fireSound, [CanBeNull] AudioClip emptySound)
+        [CanBeNull] string fireSound, [CanBeNull] string emptySound)
     {
         Name = name;
         MaxAmmo = maxAmmo;
@@ -161,8 +172,10 @@ public class Gun
         ShotWidth = shotWidth;
         Damage = damage;
         Auto = auto;
-        FireSound = fireSound;
-        EmptySound = emptySound;
+        if(fireSound != null)
+            FireSound = Resources.Load<AudioClip>("Audio/" + fireSound);
+        if(emptySound != null)
+            EmptySound = Resources.Load<AudioClip>("Audio/" + emptySound);
     }
 
     public void SetGunAudio(AudioSource audio)
@@ -175,6 +188,11 @@ public class Gun
         Debug.Log("Changing ammo by " + num);
         LoadedAmmo += num;
         if (LoadedAmmo > MaxAmmo) LoadedAmmo = MaxAmmo;
+    }
+
+    public void SetAmmo(int num)
+    {
+        LoadedAmmo = num;
     }
 
     public void playFireSound()

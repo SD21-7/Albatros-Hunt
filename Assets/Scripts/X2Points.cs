@@ -9,7 +9,7 @@ public class X2Points : MonoBehaviour
 {
     public PlayerGun playerGun;
 
-    public void x2Points()
+    public void Hit(float damage)
     {
         playerGun = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerGun>();
         playerGun.x2 = true;
