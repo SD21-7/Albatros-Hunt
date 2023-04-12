@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Clear_Enemies : MonoBehaviour
 {
-    public void ClearEnemies()
+    public void Hit()
     {
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Target");
         foreach (GameObject enemy in enemies)

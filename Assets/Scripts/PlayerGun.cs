@@ -31,8 +31,6 @@ public class PlayerGun : MonoBehaviour
     public GameObject UnAmmoImage;
     
     public TextMeshProUGUI ammoText;
-
-    public bool canFire;
     private Camera _camera;
 
     public Gun GetGun()
@@ -125,26 +123,7 @@ public class PlayerGun : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
 
             if (hit)
-            {
-                if (hit.collider.gameObject.CompareTag("score_x2"))
-                {
-                    x2Points = hit.collider.gameObject.GetComponent<X2Points>();
-                    // hit.collider.gameObject.SendMessage("Hit", gun.Damage, SendMessageOptions.DontRequireReceiver);
-                    hit.collider.gameObject.SendMessage("x2Points", SendMessageOptions.DontRequireReceiver);
-                }
-                else if (hit.collider.gameObject.CompareTag("Unlimited"))
-                {
-                    hit.collider.gameObject.SendMessage("UnlimitedAmmo", SendMessageOptions.DontRequireReceiver);
-                }
-                else if (hit.collider.gameObject.CompareTag("Clear"))
-                {
-                    hit.collider.gameObject.SendMessage("ClearEnemies", SendMessageOptions.DontRequireReceiver);
-                }
-                else
-                {
-                    hit.collider.gameObject.SendMessage("Hit", gun.Damage, SendMessageOptions.DontRequireReceiver);
-                }
-            }
+                hit.collider.gameObject.SendMessage("Hit", gun.Damage, SendMessageOptions.DontRequireReceiver);
         }
     }
 }
