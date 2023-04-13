@@ -55,7 +55,12 @@ public class PlayerGun : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PlayerPrefs.SetInt("Score", 99999);
+        if (!PlayerPrefs.HasKey("Gun"))
+        {
+            PlayerPrefs.SetString("Gun", "HuntRifle");
+            UpdateGun();
+        }
+        
         _camera = Camera.main;
         UpdateGun();
     }
@@ -63,7 +68,6 @@ public class PlayerGun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(PlayerPrefs.GetInt("Score"));
         if (fireDown > 0) fireDown -= Time.deltaTime;
         if (reloadDown > 0) reloadDown -= Time.deltaTime;
         if (Input.GetKeyDown(KeyCode.Mouse0) && !gun.Auto) Fire();
@@ -104,8 +108,7 @@ public class PlayerGun : MonoBehaviour
 
     private void Fire()
     {
-        //if (canFire)
-        if(true)
+        if (canFire)
         {
             if (fireDown > 0) return;
             if (gun.LoadedAmmo <= 0)

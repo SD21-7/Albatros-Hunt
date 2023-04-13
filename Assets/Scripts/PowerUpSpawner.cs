@@ -82,7 +82,6 @@ public class PowerUpSpawner : MonoBehaviour
 
     public void setDifficulty(int difficulty)
     {
-        Debug.Log("PowerUpDiff" + difficulty);
         spawnedPowerUps = 0;
         switch (difficulty)
         {

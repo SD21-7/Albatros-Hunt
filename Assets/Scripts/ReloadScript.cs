@@ -19,8 +19,7 @@ public class ReloadScript : MonoBehaviour
     private void Start()
     {
         playerGun = GameObject.FindWithTag("Player").GetComponent<PlayerGun>();
-        // gun = GameObject.FindWithTag("Player").GetComponent<Gun>();
-         originalPos = transform.position;
+        originalPos = transform.position;
     }
 
     private void Update()

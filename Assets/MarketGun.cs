@@ -17,11 +17,11 @@ public class MarketGun : MonoBehaviour
     // Start is called before the first frame update
     public void Hit()
     {
-        if (PlayerPrefs.HasKey("Score") && PlayerPrefs.GetInt("Score") >= price && !isBought)
+        if (PlayerPrefs.HasKey("HighScore") && PlayerPrefs.GetInt("HighScore") >= price && !isBought)
         {
-            int score = PlayerPrefs.GetInt("Score");
+            int score = PlayerPrefs.GetInt("HighScore");
             score -= price;
-            PlayerPrefs.SetInt("Score", score);
+            PlayerPrefs.SetInt("HighScore", score);
             PlayerPrefs.SetString("Gun", gunName);
             GameObject.FindWithTag("Player").BroadcastMessage("UpdateGun");
             isBought = true;
