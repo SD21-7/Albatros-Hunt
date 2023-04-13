@@ -9,6 +9,7 @@ using Random = System.Random;
 public class EnemySpawner : MonoBehaviour
 {
     public PowerUpSpawner powerUpSpawner;
+    public ScoreController scoreController;
     
     [Range(0, 10f)] private float spawnTimer;
     [Range(0, 6f)] private float spawnRange;
@@ -42,6 +43,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
+        scoreController = GameObject.Find("GameInit").GetComponent<ScoreController>();
         powerUpSpawner = GetComponentInParent<PowerUpSpawner>();
         
         newDifficulty = true;
@@ -67,6 +69,7 @@ public class EnemySpawner : MonoBehaviour
         
         if (difficulty == 2 && GameObject.FindGameObjectWithTag("Target") == null && spawnedEnemies >= totalEnemies)
         {
+            scoreController.SaveScore();
             SceneManager.LoadScene("End");
         }
     }
