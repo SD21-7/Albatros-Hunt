@@ -55,6 +55,7 @@ public class PlayerGun : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        canFire = true;
         if (!PlayerPrefs.HasKey("Gun"))
         {
             PlayerPrefs.SetString("Gun", "HuntRifle");
