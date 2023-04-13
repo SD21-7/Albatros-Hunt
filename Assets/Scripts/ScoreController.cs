@@ -8,15 +8,6 @@ public class ScoreController : MonoBehaviour
 {
     public int Score;
     [SerializeField] private TextMeshProUGUI text;
-    [SerializeField] private bool totalScore;
-
-    private void Start()
-    {
-        if (totalScore)
-        {
-            Score += PlayerPrefs.GetInt("Score");
-        }
-    }
 
     public void EnemyDied(int modifyBy)
     {
@@ -27,5 +18,10 @@ public class ScoreController : MonoBehaviour
     void Update()
     {
         text.text = "Score: " + Score;
+    }
+    
+    public void SaveScore()
+    {
+        PlayerPrefs.SetInt("HighScore", Score);
     }
 }

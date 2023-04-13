@@ -10,6 +10,7 @@ public class MainMenu : MonoBehaviour
 {
     public TextMeshProUGUI _titleText;
     public GameObject _LevelButton;
+    public TextMeshProUGUI _HighScoreText;
     
     public void PlayGame()
     {
@@ -40,6 +41,22 @@ public class MainMenu : MonoBehaviour
         {
             PlayerPrefs.SetInt("CanSelect", 0);
             _LevelButton.SetActive(false);
+        }
+
+        if (PlayerPrefs.HasKey("HighScore"))
+        {
+            if (PlayerPrefs.GetInt("HighScore") > 0)
+            {
+                _HighScoreText.text = "Highscore:" + PlayerPrefs.GetInt("HighScore");
+            }
+            else
+            {
+                _HighScoreText.text = "";
+            }
+        }
+        else
+        {
+            _HighScoreText.text = "";
         }
     }
 
