@@ -19,9 +19,13 @@ public class ScoreController : MonoBehaviour
     {
         text.text = "Score: " + Score;
     }
-    
+
     public void SaveScore()
     {
-        PlayerPrefs.SetInt("HighScore", Score);
+        PlayerPrefs.SetInt("LatestScore", Score);
+        if (!PlayerPrefs.HasKey("HighScore") || PlayerPrefs.GetInt("HighScore") < Score)
+        {
+            PlayerPrefs.SetInt("HighScore", Score);
+        }
     }
 }
