@@ -13,6 +13,7 @@ public class End : MonoBehaviour
         timer -= Time.deltaTime;
         if (timer <= 0)
         {
+            Cursor.visible = true;
             SceneManager.LoadScene("Main_Menu");
         }
     }

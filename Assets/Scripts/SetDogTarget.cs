@@ -19,8 +19,12 @@ public class SetDogTarget : MonoBehaviour
             Debug.Log("Target hit");
             collision.gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
             collision.gameObject.GetComponent<SpriteRenderer>().enabled = false;
-            collision.gameObject.GetComponent<Animator>().speed = 0;
-            dogController.destinationList.Add(collision.gameObject.transform.position);
+            collision.gameObject.GetComponent<Animator>().speed = 0; 
+            if (dogController.destinationList.Count < 10)
+            {
+                dogController.destinationList.Add(collision.gameObject.transform.position);
+            }
+            Destroy(collision.gameObject);
         }
     }
     

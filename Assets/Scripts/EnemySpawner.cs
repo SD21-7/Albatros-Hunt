@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = System.Random;
@@ -65,6 +64,8 @@ public class EnemySpawner : MonoBehaviour
             newDifficulty = true;
             setDifficulty(++difficulty);
             powerUpSpawner.setDifficulty(difficulty);
+            Debug.Log("Difficulty: " + difficulty);
+            Debug.Log(totalEnemies);
         }
         
         if (difficulty == 2 && GameObject.FindGameObjectWithTag("Target") == null && spawnedEnemies >= totalEnemies)
